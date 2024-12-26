@@ -25,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { useTranslations } from "next-intl";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -39,6 +40,7 @@ const FormSchema = z.object({
 });
 
 export function RegisterButton() {
+  const t = useTranslations("dialog_auth");
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -55,14 +57,12 @@ export function RegisterButton() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">Register</Button>
+        <Button className="w-full">{t("register")}</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Register</DialogTitle>
-          <DialogDescription>
-            Create a new account to start quizzing.
-          </DialogDescription>
+          <DialogTitle>{t("register")}</DialogTitle>
+          <DialogDescription>{t("register_desc")}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Form {...form}>
@@ -75,12 +75,12 @@ export function RegisterButton() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Fullname</FormLabel>
+                    <FormLabel>{t("fullname")}</FormLabel>
                     <FormControl>
                       <Input placeholder="Alice Smith" {...field} />
                     </FormControl>
                     <FormDescription>
-                      This is your public display name.
+                      {t("this_is_your_public_display_name")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -92,12 +92,12 @@ export function RegisterButton() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("email")}</FormLabel>
                     <FormControl>
                       <Input placeholder="alice@example.com" {...field} />
                     </FormControl>
                     <FormDescription>
-                      This is your public email address.
+                      {t("this_is_your_public_email_address")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -109,13 +109,10 @@ export function RegisterButton() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Fullname</FormLabel>
+                    <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="xxxxxx" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Please provide a password with at least 6 characters.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

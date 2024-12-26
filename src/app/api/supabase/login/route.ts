@@ -1,9 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "~/lib/supabase/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const formData = await req.formData();
+  console.log("next req", req);
 
   const data = {
     email: formData.get("email") as string,

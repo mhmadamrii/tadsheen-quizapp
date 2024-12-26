@@ -1,6 +1,19 @@
 {
     "HomePage": {
         "title": "Hello world! بتنمشتنبسينبستيم عخهقثصقثن",
-        "about": "Go to the about page"
+        "about": "Go to the about page",
+        "welcome": "QuizMaster مرحبا بكم في",
+        "test_your_knowledge": "!اختبر معلوماتك وتحدي نفسك"
+    },
+    "dialog_auth": {
+        "login": "تسجيل الدخول",
+        "login_desc": "أدخل بيانات الاعتماد الخاصة بك للوصول إلى حسابك.",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "fullname": "الاسم الكامل",
+        "register": "تسجيل",
+        "register_desc": "أنشئ حساب جديد للبدء بالمزيد من المهارات.",
+        "this_is_your_public_display_name": "هذا هو اسمك العام المعروض لكم.",
+        "this_is_your_public_email_address": "هذا هو عنوان بريدك الإلكتروني العام المعروض لكم."
     }
 }

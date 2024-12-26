@@ -1,6 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Spinner } from "~/components/spinner";
+import { api } from "~/trpc/react";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
@@ -36,6 +39,7 @@ const FormSchema = z.object({
 });
 
 export function LoginButton() {
+  const t = useTranslations("dialog_auth");
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -46,21 +50,35 @@ export function LoginButton() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {}
+  // const { data } = api.spAuth.getJsonPlaceholder.useQuery();
+  // console.log("data", data);
+
+  const {
+    mutateAsync: login,
+    error: errorLogin,
+    isPending,
+  } = api.spAuth.signIn.useMutation();
+  console.log("error login", errorLogin);
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      login({ email: data.email, password: data.password });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="w-full">
-          Login
+          {t("login")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Login</DialogTitle>
-          <DialogDescription>
-            Enter your credentials to access your account.
-          </DialogDescription>
+          <DialogTitle>{t("login")}</DialogTitle>
+          <DialogDescription>{t("login_desc")}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Form {...form}>
@@ -73,12 +91,16 @@ export function LoginButton() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("email")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="alice@example.com" {...field} />
+                      <Input
+                        disabled={isPending}
+                        placeholder="alice@example.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
-                      This is your public email address.
+                      {t("this_is_your_public_email_address")}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -90,19 +112,21 @@ export function LoginButton() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Fullname</FormLabel>
+                    <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="xxxxxx" {...field} />
+                      <Input
+                        disabled={isPending}
+                        type="password"
+                        placeholder="xxxxxx"
+                        {...field}
+                      />
                     </FormControl>
-                    <FormDescription>
-                      Please provide a password with at least 6 characters.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button className="w-full" onClick={() => setOpen(false)}>
-                Login
+              <Button className="w-full">
+                {isPending ? <Spinner /> : t("login")}
               </Button>
             </form>
           </Form>

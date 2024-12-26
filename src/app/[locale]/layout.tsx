@@ -8,6 +8,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "~/i18n/routing";
+import { createClient } from "~/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -22,7 +23,10 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>) {
+  const supabase = await createClient();
   const locale = (await params).locale;
+  const currentUser = await supabase.auth.getUser();
+  console.log("current user", currentUser);
 
   if (!routing.locales.includes(locale as any)) {
     notFound();

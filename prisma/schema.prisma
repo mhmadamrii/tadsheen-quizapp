@@ -6,24 +6,13 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
+    provider  = "postgresql"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
-}
-
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
 // Necessary for Next auth
@@ -55,14 +44,15 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    Quiz          Quiz[]
+    Submission    Submission[]
 }
 
 model VerificationToken {
@@ -71,4 +61,55 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Quiz {
+    id         String       @id @default(cuid())
+    title      String
+    language   String?
+    createdBy  String       @map("userId") // Foreign key for the User model
+    user       User         @relation(fields: [createdBy], references: [id])
+    questions  Question[]
+    createdAt  DateTime     @default(now())
+    updatedAt  DateTime     @updatedAt
+    Submission Submission[]
+}
+
+model Question {
+    id      String   @id @default(cuid())
+    quizId  String
+    quiz    Quiz     @relation(fields: [quizId], references: [id])
+    text    String
+    options Option[]
+    Answer  Answer[]
+}
+
+model Option {
+    id         String   @id @default(cuid())
+    questionId String
+    question   Question @relation(fields: [questionId], references: [id])
+    text       String
+    isCorrect  Boolean // Indicates whether this is the correct answer
+    Answer     Answer[]
+}
+
+model Submission {
+    id          String   @id @default(cuid())
+    userId      String
+    user        User     @relation(fields: [userId], references: [id])
+    quizId      String
+    quiz        Quiz     @relation(fields: [quizId], references: [id])
+    score       Int
+    answers     Answer[]
+    submittedAt DateTime @default(now())
+}
+
+model Answer {
+    id               String     @id @default(cuid())
+    submissionId     String
+    submission       Submission @relation(fields: [submissionId], references: [id])
+    questionId       String
+    question         Question   @relation(fields: [questionId], references: [id])
+    selectedOptionId String
+    selectedOption   Option     @relation(fields: [selectedOptionId], references: [id])
 }

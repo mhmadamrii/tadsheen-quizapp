@@ -50,15 +50,11 @@ export function LoginButton() {
     },
   });
 
-  // const { data } = api.spAuth.getJsonPlaceholder.useQuery();
-  // console.log("data", data);
-
   const {
     mutateAsync: login,
     error: errorLogin,
     isPending,
   } = api.spAuth.signIn.useMutation();
-  console.log("error login", errorLogin);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     try {

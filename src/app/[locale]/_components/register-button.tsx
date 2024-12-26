@@ -1,12 +1,16 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { Spinner } from "~/components/spinner";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
+import { api } from "~/trpc/react";
 import { z } from "zod";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
+
 import {
   Form,
   FormControl,
@@ -25,7 +29,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { useTranslations } from "next-intl";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -43,6 +46,20 @@ export function RegisterButton() {
   const t = useTranslations("dialog_auth");
   const [open, setOpen] = useState(false);
 
+  const { mutate, isPending } = api.spAuth.signUp.useMutation({
+    onSuccess: (res) => {
+      console.log("res", res);
+      toast.success(t("success"));
+    },
+    onError: (err) => {
+      console.log("err", err);
+      if (err.message === "User already exist") {
+        toast.error(t("user_already_exist"));
+        return;
+      }
+    },
+  });
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -52,7 +69,9 @@ export function RegisterButton() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {}
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    mutate(data);
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -77,7 +96,11 @@ export function RegisterButton() {
                   <FormItem>
                     <FormLabel>{t("fullname")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Alice Smith" {...field} />
+                      <Input
+                        disabled={isPending}
+                        placeholder="Alice Smith"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       {t("this_is_your_public_display_name")}
@@ -94,7 +117,11 @@ export function RegisterButton() {
                   <FormItem>
                     <FormLabel>{t("email")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="alice@example.com" {...field} />
+                      <Input
+                        disabled={isPending}
+                        placeholder="alice@example.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       {t("this_is_your_public_email_address")}
@@ -111,14 +138,19 @@ export function RegisterButton() {
                   <FormItem>
                     <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="xxxxxx" {...field} />
+                      <Input
+                        disabled={isPending}
+                        type="password"
+                        placeholder="xxxxxx"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button className="w-full" onClick={() => setOpen(false)}>
-                Register
+              <Button className="w-full">
+                {isPending ? <Spinner /> : t("register")}
               </Button>
             </form>
           </Form>

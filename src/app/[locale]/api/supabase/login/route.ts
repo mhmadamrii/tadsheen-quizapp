@@ -2,20 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "~/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
+  const requestBody = await req.json();
   const supabase = await createClient();
-  const formData = await req.formData();
-  console.log("next req", req);
 
   const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email: requestBody.email,
+    password: requestBody.password,
   };
 
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    return NextResponse.redirect("/error");
+    console.log("fucking error", error);
   }
 
-  return NextResponse.redirect("/");
+  return data;
 }

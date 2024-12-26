@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
+import { Toaster } from "sonner";
 import { TRPCReactProvider } from "~/trpc/react";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
@@ -38,6 +39,7 @@ export default async function RootLayout({
       <body>
         <TRPCReactProvider>
           <NextIntlClientProvider messages={messages}>
+            <Toaster richColors />
             {children}
           </NextIntlClientProvider>
         </TRPCReactProvider>

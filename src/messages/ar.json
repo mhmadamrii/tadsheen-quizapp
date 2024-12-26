@@ -14,6 +14,8 @@
         "register": "تسجيل",
         "register_desc": "أنشئ حساب جديد للبدء بالمزيد من المهارات.",
         "this_is_your_public_display_name": "هذا هو اسمك العام المعروض لكم.",
-        "this_is_your_public_email_address": "هذا هو عنوان بريدك الإلكتروني العام المعروض لكم."
+        "this_is_your_public_email_address": "هذا هو عنوان بريدك الإلكتروني العام المعروض لكم.",
+        "success": "تم تسجيل الدخول بنجاح",
+        "user_already_exist": "المستخدم موجود بالفعل"
     }
 }

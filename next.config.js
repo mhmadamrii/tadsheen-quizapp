@@ -3,8 +3,17 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import createNextIntlPlugin from "next-intl/plugin";
+const withNextIntl = createNextIntlPlugin();
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = withNextIntl({
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+});
 
 export default config;

@@ -24,24 +24,12 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>) {
-  const supabase = await createClient();
-  const locale = (await params).locale;
-  const { data: currentUser } = await supabase.auth.getUser();
-  console.log("current user", currentUser);
-
-  if (!routing.locales.includes(locale as any)) {
-    notFound();
-  }
-
-  const messages = await getMessages();
   return (
-    <html lang={locale} className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${GeistSans.variable}`}>
       <body>
         <TRPCReactProvider>
-          <NextIntlClientProvider messages={messages}>
-            <Toaster richColors />
-            {children}
-          </NextIntlClientProvider>
+          <Toaster richColors />
+          {children}
         </TRPCReactProvider>
       </body>
     </html>

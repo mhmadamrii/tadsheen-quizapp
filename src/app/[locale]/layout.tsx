@@ -26,7 +26,7 @@ export default async function RootLayout({
 }>) {
   const supabase = await createClient();
   const locale = (await params).locale;
-  const currentUser = await supabase.auth.getUser();
+  const { data: currentUser } = await supabase.auth.getUser();
   console.log("current user", currentUser);
 
   if (!routing.locales.includes(locale as any)) {

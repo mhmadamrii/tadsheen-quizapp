@@ -16,5 +16,5 @@ export async function POST(req: NextRequest) {
     console.log("fucking error", error);
   }
 
-  return data;
+  return NextResponse.json("Successfully signed in!");
 }

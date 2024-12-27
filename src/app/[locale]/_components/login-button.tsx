@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { Spinner } from "~/components/spinner";
 import { api } from "~/trpc/react";
 import { useTranslations } from "next-intl";
@@ -54,7 +55,12 @@ export function LoginButton() {
     mutateAsync: login,
     error: errorLogin,
     isPending,
-  } = api.spAuth.signIn.useMutation();
+  } = api.spAuth.signIn.useMutation({
+    onSuccess: (res) => {
+      console.log("res", res);
+      toast.success(t("success"));
+    },
+  });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     try {

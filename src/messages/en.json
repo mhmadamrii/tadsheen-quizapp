@@ -3,7 +3,9 @@
         "title": "Hello world!",
         "about": "Go to the about page",
         "welcome": "Welcome to QuizMaster",
-        "test_your_knowledge": "Test your knowledge and challenge yourself!"
+        "test_your_knowledge": "Test your knowledge and challenge yourself!",
+        "getting_started": "Getting Started",
+        "login": "Login"
     },
     "dialog_auth": {
         "login": "Login",

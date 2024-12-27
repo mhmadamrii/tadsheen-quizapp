@@ -3,7 +3,9 @@
         "title": "Hello world! بتنمشتنبسينبستيم عخهقثصقثن",
         "about": "Go to the about page",
         "welcome": "QuizMaster مرحبا بكم في",
-        "test_your_knowledge": "!اختبر معلوماتك وتحدي نفسك"
+        "test_your_knowledge": "!اختبر معلوماتك وتحدي نفسك",
+        "getting_started": "البدء",
+        "login": "تسجيل الدخول"
     },
     "dialog_auth": {
         "login": "تسجيل الدخول",

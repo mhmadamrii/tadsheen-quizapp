@@ -19,5 +19,31 @@
         "this_is_your_public_email_address": "This is your public email address.",
         "success": "Successfully registered",
         "user_already_exist": "User already exist"
+    },
+    "quiz_form": {
+        "title": "Title",
+        "title_desc": "Enter the title of the quiz.",
+        "question": "Question",
+        "question_desc": "Enter the question.",
+        "answer": "Answer",
+        "answer_desc": "Enter the answer.",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "allow_multiple_answers": "Allow multiple answers",
+        "create_question": "Create Question",
+        "submit_quiz": "Submit Quiz",
+        "add_question": "Add Question",
+        "remove": "Remove",
+        "total_questions": "Total Questions",
+        "show_previous": "Show qrevious questions",
+        "category": "Category",
+        "select_category": "Select a category"
+    },
+    "quiz_categories": {
+        "general_knowledge": "General Knowledge",
+        "science_quiz": "Science Quiz",
+        "history_trivia": "History Trivia",
+        "pop_culture": "Pop Culture",
+        "geography_challenge": "Geography Challenge"
     }
 }

@@ -9,7 +9,7 @@ export default async function Page({
   const locale = (await params).locale;
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <LandingPageClient currentLang={locale} />
     </Suspense>
   );

@@ -19,5 +19,31 @@
         "this_is_your_public_email_address": "هذا هو عنوان بريدك الإلكتروني العام المعروض لكم.",
         "success": "تم تسجيل الدخول بنجاح",
         "user_already_exist": "المستخدم موجود بالفعل"
+    },
+    "quiz_form": {
+        "title": "العنوان",
+        "title_desc": "أدخل عنوان المساعدة.",
+        "question": "السؤال",
+        "question_desc": "أدخل السؤال.",
+        "answer": "الجواب",
+        "answer_desc": "أدخل الجواب.",
+        "submit": "تقديم",
+        "cancel": "إلغاء",
+        "allow_multiple_answers": "السماح بالجواب المتعددة",
+        "create_question": "إنشاء سؤال",
+        "submit_quiz": "تقديم المساعدة",
+        "add_question": "إضافة سؤال",
+        "remove": "إزالة",
+        "total_questions": "إجمالي الأسئلة",
+        "show_previous": "إظهار السؤالات السابقة",
+        "category": "الفئة",
+        "select_category": "اختر فئة"
+    },
+    "quiz_categories": {
+        "general_knowledge": "المعرفة العامة",
+        "science_quiz": "المعرفة العامة",
+        "history_trivia": "المعرفة العامة",
+        "pop_culture": "المعرفة العامة",
+        "geography_challenge": "المعرفة العامة"
     }
 }

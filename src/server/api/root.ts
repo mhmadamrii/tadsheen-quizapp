@@ -1,6 +1,7 @@
 import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { supabaseAuthRouter } from "./routers/supabase-auth";
+import { quizRouter } from "./routers/quiz";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { supabaseAuthRouter } from "./routers/supabase-auth";
 export const appRouter = createTRPCRouter({
   post: postRouter,
   spAuth: supabaseAuthRouter,
+  quiz: quizRouter,
 });
 
 // export type definition of API

@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
 import { login, signup } from "../auth.action";
@@ -22,13 +23,18 @@ export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("submitting");
     event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    if (activeTab === "signin") {
-      login(formData);
-    } else {
-      signup(formData);
+    try {
+      const formData = new FormData(event.target as HTMLFormElement);
+      if (activeTab === "signin") {
+        login(formData);
+      } else {
+        signup(formData);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      toast.success("Successfully logged in");
     }
   };
 

@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
+import { useTranslations } from "next-intl";
+import { Separator } from "~/components/ui/separator";
 import { useForm } from "react-hook-form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -9,6 +12,14 @@ import { Switch } from "~/components/ui/switch";
 import { Plus, Trash } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 import {
   Form,
@@ -32,20 +43,30 @@ const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   question: z.string().min(1, "Question is required"),
   static_answer: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
 });
 
 export default function CreateQuiz() {
-  const [isShowPreviousQ, setIsShowPreviousQ] = useState(false);
+  const t = useTranslations("quiz_form");
+  const tq = useTranslations("quiz_categories");
 
+  const [isShowPreviousQ, setIsShowPreviousQ] = useState(false);
+  const [isMultipleAnswers, setIsMultipleAnswers] = useState(false);
   const [multipleQuestions, setMultipleQuestions] = useState<Question[]>([
-    { id: 1, question: "", answers: [], static_answer: "" },
+    {
+      id: 1,
+      question: "",
+      answers: [],
+      static_answer: "",
+    },
   ]);
 
   const [multipleAnswers, setMultipleAnswers] = useState([
-    { id: 1, value: "" },
+    {
+      id: 1,
+      value: "",
+    },
   ]);
-
-  const [isMultipleAnswers, setIsMultipleAnswers] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -85,6 +106,12 @@ export default function CreateQuiz() {
     );
   };
 
+  const { mutate } = api.quiz.createQuiz.useMutation({
+    onSuccess: (data) => {
+      console.log("data", data);
+    },
+  });
+
   console.log("multiple question", multipleQuestions.slice(1));
 
   return (
@@ -99,68 +126,114 @@ export default function CreateQuiz() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>{t("title")}</FormLabel>
                 <FormControl>
                   <Input placeholder="Quiz title" {...field} />
                 </FormControl>
-                <FormDescription>Your quiz title</FormDescription>
+                <FormDescription>{t("title_desc")}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
+          <div className="flex w-full gap-2">
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("category")}</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("select_category")} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">
+                        {tq("general_knowledge")}
+                      </SelectItem>
+                      <SelectItem value="2">{tq("science_quiz")}</SelectItem>
+                      <SelectItem value="3">{tq("history_trivia")}</SelectItem>
+                      <SelectItem value="4">{tq("pop_culture")}</SelectItem>
+                      <SelectItem value="5">
+                        {tq("geography_challenge")}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>Select your quiz category</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Separator />
+
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
-              <h1 className="text-3xl font-semibold">
-                Total Questions({multipleQuestions.length - 1})
+              <h1 className="text-xl font-semibold text-gray-500">
+                {t("total_questions")} ({multipleQuestions.length - 1})
               </h1>
 
               <Button
                 type="button"
                 onClick={() => setIsShowPreviousQ(!isShowPreviousQ)}
               >
-                Show previous questions
+                {t("show_previous")}
               </Button>
             </div>
 
             {isShowPreviousQ && (
-              <ul>
-                {multipleQuestions.map((q, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center justify-between border p-2"
-                  >
-                    <li
-                      className={cn("list-disc", {
-                        hidden: i == 0,
-                      })}
+              <>
+                {multipleQuestions.length === 1 && (
+                  <h1 className="text-center text-xl font-bold italic text-gray-500">
+                    No questions found
+                  </h1>
+                )}
+                <ul>
+                  {multipleQuestions.map((q, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-2"
                     >
-                      {q.question}
-                    </li>
-                    {i !== 0 && (
-                      <Button
-                        onClick={() =>
-                          setMultipleQuestions(
-                            multipleQuestions.filter((q, index) => index !== i),
-                          )
-                        }
-                        type="button"
-                        variant="destructive"
-                        size="icon"
+                      <li
+                        className={cn("list-disc", {
+                          hidden: i == 0,
+                        })}
                       >
-                        <Trash />
-                      </Button>
-                    )}
-                  </div>
-                ))}
-              </ul>
+                        {q.question}
+                      </li>
+                      {i !== 0 && (
+                        <Button
+                          onClick={() =>
+                            setMultipleQuestions(
+                              multipleQuestions.filter(
+                                (q, index) => index !== i,
+                              ),
+                            )
+                          }
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                        >
+                          <Trash />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </ul>
+              </>
             )}
           </div>
 
           <div className="flex items-center justify-between space-x-4">
             <div className="flex items-center gap-2">
               <FormLabel className="text-3xl font-semibold">
-                Add Question
+                {t("add_question")}
               </FormLabel>
             </div>
           </div>
@@ -170,11 +243,11 @@ export default function CreateQuiz() {
             name="question"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Question</FormLabel>
+                <FormLabel>{t("question")}</FormLabel>
                 <FormControl>
                   <Input placeholder="What is end of time?" {...field} />
                 </FormControl>
-                <FormDescription>Your Question</FormDescription>
+                <FormDescription>{t("question_desc")}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -182,7 +255,7 @@ export default function CreateQuiz() {
 
           <div className="flex items-center justify-between space-x-4">
             <div className="flex items-center gap-2">
-              <FormLabel>Allow Multiple Answers</FormLabel>
+              <FormLabel>{t("allow_multiple_answers")}</FormLabel>
               <Switch
                 checked={isMultipleAnswers}
                 onCheckedChange={() => setIsMultipleAnswers(!isMultipleAnswers)}
@@ -212,7 +285,7 @@ export default function CreateQuiz() {
                     variant="destructive"
                     onClick={() => removeAnswer(answer.id)}
                   >
-                    Remove
+                    {t("remove")}
                   </Button>
                 </div>
               ))}
@@ -235,9 +308,9 @@ export default function CreateQuiz() {
           )}
 
           <div className="flex items-center gap-2">
-            <Button type="submit">Create Question</Button>
+            <Button type="submit">{t("create_question")}</Button>
             <Button disabled={multipleQuestions.length <= 1} type="submit">
-              Submit Quiz
+              {t("submit_quiz")}
             </Button>
           </div>
         </form>

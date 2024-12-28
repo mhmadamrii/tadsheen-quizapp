@@ -4,12 +4,51 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
+  supabaseProcedure,
 } from "~/server/api/trpc";
 
 export const supabaseAuthRouter = createTRPCRouter({
-  getJsonPlaceholder: publicProcedure.query(() => {
-    return { message: "Hello from tRPC" };
-  }),
+  onboarding: supabaseProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        email: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          email: input.email,
+        },
+      });
+
+      if (user) {
+        return;
+      }
+
+      const dbUser = await ctx.db.user.create({
+        data: {
+          id: input.id,
+          name: input.name ?? "",
+          email: input.email,
+        },
+      });
+
+      return dbUser;
+    }),
+
+  getUser: publicProcedure
+    .input(z.object({ email: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.db.user.findUnique({
+        where: {
+          email: input.email,
+        },
+      });
+
+      return user;
+    }),
   signIn: publicProcedure
     .input(z.object({ email: z.string(), password: z.string() }))
     .mutation(async ({ input }) => {

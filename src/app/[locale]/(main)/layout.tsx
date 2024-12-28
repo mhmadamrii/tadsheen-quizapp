@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { LanguageSwitcher } from "~/components/language-switcher";
 import { Button } from "~/components/ui/button";
 import { createClient } from "~/lib/supabase/server";
+import { OnboardingDialog } from "./dashboard/_components/onboarding-dialog";
+import { api } from "~/trpc/server";
 
 export default async function DashboardLayout({
   children,
@@ -15,6 +17,8 @@ export default async function DashboardLayout({
   const currentLang = (await params).locale;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
+  const user = await api.spAuth.getUser({ email: data?.user?.email ?? "" });
+  console.log("db user", user);
   // console.log(error);
 
   if (!data.user) {
@@ -22,6 +26,8 @@ export default async function DashboardLayout({
   }
   return (
     <div className="flex min-h-screen flex-col">
+      {!user && <OnboardingDialog user={data.user} />}
+
       <header className="border-b px-5">
         <div className="container mx-auto flex items-center justify-between py-4">
           <Link href="/dashboard" className="text-2xl font-bold">

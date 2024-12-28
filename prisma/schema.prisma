@@ -44,7 +44,7 @@ model Session {
 }
 
 model User {
-    id            String       @id @default(cuid())
+    id            String       @id @default(uuid())
     name          String?
     email         String?      @unique
     emailVerified DateTime?
@@ -65,21 +65,23 @@ model VerificationToken {
 }
 
 model Quiz {
-    id         String       @id @default(cuid())
-    title      String
-    language   String?
-    createdBy  String       @map("userId")
-    user       User         @relation(fields: [createdBy], references: [id])
-    questions  Question[]
-    createdAt  DateTime     @default(now())
-    updatedAt  DateTime     @updatedAt
-    Submission Submission[]
+    id        String     @id @default(cuid())
+    title     String
+    language  String?
+    createdBy String     @map("userId")
+    category  String
+    user      User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+    questions Question[]
+    // submissions Submission[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Question {
     id         String   @id @default(cuid())
     quizId     String
-    quiz       Quiz     @relation(fields: [quizId], references: [id])
+    quiz       Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
     question   String
     questionId String?
     answers    Answer[]
@@ -97,7 +99,7 @@ model Submission {
     userId      String
     user        User     @relation(fields: [userId], references: [id])
     quizId      String
-    quiz        Quiz     @relation(fields: [quizId], references: [id])
+    // quiz        Quiz     @relation(fields: [quizId], references: [id])
     score       Int
     submittedAt DateTime @default(now())
 }

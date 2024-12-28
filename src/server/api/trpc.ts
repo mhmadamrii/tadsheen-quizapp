@@ -10,6 +10,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { createClient } from "~/lib/supabase/server";
 
 import { auth } from "~/server/auth";
 import { db } from "~/server/db";
@@ -128,6 +129,25 @@ export const protectedProcedure = t.procedure
       ctx: {
         // infers the `session` as non-nullable
         session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  });
+
+export const supabaseProcedure = t.procedure
+  .use(timingMiddleware)
+  .use(async ({ ctx, next }) => {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getUser();
+    console.log("data procedure penting", data);
+
+    if (!data.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    return next({
+      ctx: {
+        // infers the `session` as non-nullable
+        session: { ...ctx.session, user: data.user },
       },
     });
   });

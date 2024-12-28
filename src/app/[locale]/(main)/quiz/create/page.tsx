@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
 import { useTranslations } from "next-intl";
@@ -30,6 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { Spinner } from "~/components/spinner";
 
 type Answer = { id: number; value: string };
 type Question = {
@@ -106,13 +108,38 @@ export default function CreateQuiz() {
     );
   };
 
-  const { mutate } = api.quiz.createQuiz.useMutation({
-    onSuccess: (data) => {
-      console.log("data", data);
+  const { mutate, isPending } = api.quiz.createQuiz.useMutation({
+    onSuccess: () => {
+      toast.success("Successfully created quiz");
+      form.reset();
+      setMultipleQuestions([
+        {
+          id: 1,
+          question: "",
+          answers: [],
+          static_answer: "",
+        },
+      ]);
+      setMultipleAnswers([]);
     },
   });
 
-  console.log("multiple question", multipleQuestions.slice(1));
+  const handleCreateQuiz = () => {
+    console.log(form.getValues("category"));
+    const transformedQuestions = multipleQuestions.slice(1).map((item) => ({
+      question: item.question,
+      answers: item.answers.map((answer) => ({
+        value: answer.value,
+      })),
+    }));
+
+    mutate({
+      title: form.getValues("title"),
+      category: form.getValues("category"),
+      language: "English",
+      questions: transformedQuestions,
+    });
+  };
 
   return (
     <main className="mx-auto flex h-full items-center justify-center">
@@ -309,8 +336,12 @@ export default function CreateQuiz() {
 
           <div className="flex items-center gap-2">
             <Button type="submit">{t("create_question")}</Button>
-            <Button disabled={multipleQuestions.length <= 1} type="submit">
-              {t("submit_quiz")}
+            <Button
+              onClick={handleCreateQuiz}
+              disabled={multipleQuestions.length <= 1}
+              type="button"
+            >
+              {isPending ? <Spinner /> : t("submit_quiz")}
             </Button>
           </div>
         </form>

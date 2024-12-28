@@ -27,14 +27,24 @@ export default function AuthPage() {
     try {
       const formData = new FormData(event.target as HTMLFormElement);
       if (activeTab === "signin") {
-        login(formData);
+        login(formData).then((res) => {
+          if (res.status === 401) {
+            toast.error(res.message);
+          } else {
+            toast.success("Successfully logged in");
+          }
+        });
       } else {
-        signup(formData);
+        signup(formData).then((res) => {
+          if (res.status === 409) {
+            toast.error(res.message);
+          } else {
+            toast.success("Successfully registered");
+          }
+        });
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      toast.success("Successfully logged in");
     }
   };
 

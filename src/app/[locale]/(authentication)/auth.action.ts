@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "~/lib/supabase/server";
 
 export async function login(formData: FormData) {
@@ -17,7 +17,10 @@ export async function login(formData: FormData) {
   console.log("error auth", error);
 
   if (error) {
-    redirect("/error");
+    return {
+      status: 401,
+      message: "Invalid credentials",
+    };
   }
 
   revalidatePath("/", "layout");
@@ -35,7 +38,10 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect("/error");
+    return {
+      status: 409,
+      message: "User already exist",
+    };
   }
 
   revalidatePath("/", "layout");

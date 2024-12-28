@@ -31,6 +31,7 @@
         "cancel": "Cancel",
         "allow_multiple_answers": "Allow multiple answers",
         "create_question": "Create Question",
+        "edit_quiz": "Edit Quiz",
         "submit_quiz": "Submit Quiz",
         "add_question": "Add Question",
         "remove": "Remove",

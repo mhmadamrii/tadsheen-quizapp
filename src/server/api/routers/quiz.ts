@@ -57,7 +57,15 @@ export const quizRouter = createTRPCRouter({
 
       return { submission, score };
     }),
-
+  deleteQuiz: supabaseProcedure
+    .input(z.object({ quizId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.quiz.delete({
+        where: {
+          id: input.quizId,
+        },
+      });
+    }),
   getQuizById: publicProcedure
     .input(z.object({ quizId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -116,6 +124,7 @@ export const quizRouter = createTRPCRouter({
         _count: {
           select: {
             questions: true,
+            submissions: true,
           },
         },
       },
@@ -146,6 +155,54 @@ export const quizRouter = createTRPCRouter({
       const { title, language, questions, category } = input;
 
       const quiz = await ctx.db.quiz.create({
+        data: {
+          title,
+          category,
+          language,
+          createdBy: ctx.session.user.id,
+          questions: {
+            create: questions.map((q) => ({
+              question: q.question,
+              correctAnswerId: q.correctAnswerId,
+              answers: {
+                create: q.answers.map((a) => ({
+                  value: a.value,
+                })),
+              },
+            })),
+          },
+        },
+      });
+
+      return quiz;
+    }),
+  updateQuiz: supabaseProcedure
+    .input(
+      z.object({
+        quizId: z.string(),
+        category: z.string(),
+        title: z.string(),
+        language: z.string().optional(),
+        questions: z.array(
+          z.object({
+            correctAnswerId: z.string(),
+            question: z.string(),
+            answers: z.array(
+              z.object({
+                value: z.string(),
+              }),
+            ),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { title, language, questions, category } = input;
+
+      const quiz = await ctx.db.quiz.update({
+        where: {
+          id: input.quizId,
+        },
         data: {
           title,
           category,

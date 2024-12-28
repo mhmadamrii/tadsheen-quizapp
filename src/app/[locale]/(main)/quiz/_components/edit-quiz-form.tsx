@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Question } from "~/lib/types";
-import { EditQuestionDialog } from "../_components/edit-question-dialog";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Question } from "~/lib/types";
 import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
@@ -35,6 +34,7 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { EditQuestionDialog } from "./edit-question-dialog";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -43,14 +43,14 @@ const FormSchema = z.object({
   category: z.string().min(1, "Category is required"),
 });
 
-export default function CreateQuiz() {
+export function EditQuizForm({ quizById }: { quizById: any }) {
   const t = useTranslations("quiz_form");
   const tq = useTranslations("quiz_categories");
   const router = useRouter();
 
   const [correctAnswerId, setCorrectAnswerId] = useState("");
   const [isOpenDialogEditQuestion, setIsOpenDialogEditQuestion] = useState(false); // prettier-ignore
-  const [isShowPreviousQ, setIsShowPreviousQ] = useState(false);
+  const [isShowPreviousQ, setIsShowPreviousQ] = useState(true);
   const [isMultipleAnswers, setIsMultipleAnswers] = useState(false);
   const [multipleQuestions, setMultipleQuestions] = useState<Question[]>([
     {
@@ -92,12 +92,7 @@ export default function CreateQuiz() {
     ]);
     form.setValue("question", "");
     form.setValue("static_answer", "");
-    setMultipleAnswers([
-      {
-        id: 1,
-        value: "",
-      },
-    ]);
+    setMultipleAnswers([]);
   };
 
   const addAnswer = () => {
@@ -115,9 +110,9 @@ export default function CreateQuiz() {
     );
   };
 
-  const { mutate, isPending } = api.quiz.createQuiz.useMutation({
+  const { mutate, isPending } = api.quiz.updateQuiz.useMutation({
     onSuccess: () => {
-      toast.success("Successfully created quiz");
+      toast.success("Successfully edit quiz");
       router.push("/dashboard");
     },
   });
@@ -132,6 +127,7 @@ export default function CreateQuiz() {
     }));
 
     mutate({
+      quizId: quizById.id,
       title: form.getValues("title"),
       category: form.getValues("category"),
       language: "English",
@@ -139,9 +135,14 @@ export default function CreateQuiz() {
     });
   };
 
+  useEffect(() => {
+    form.setValue("title", quizById.title);
+    setMultipleQuestions(quizById.questions);
+  }, [quizById]);
+
   return (
-    <main className="mx-auto flex h-full max-w-4xl flex-col items-center justify-center gap-3 py-5">
-      <h1 className="text-3xl font-bold">Create Quiz</h1>
+    <section className="mx-auto flex h-full w-full max-w-4xl flex-col items-center justify-center gap-3 py-5">
+      <h1 className="text-3xl font-bold">Edit Quiz</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -233,7 +234,6 @@ export default function CreateQuiz() {
                       >
                         {q.question}
                       </li>
-
                       <div className="flex items-center gap-2">
                         {i !== 0 && (
                           <EditQuestionDialog
@@ -333,20 +333,18 @@ export default function CreateQuiz() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button disabled={correctAnswerId === ""} type="submit">
-              {t("create_question")}
-            </Button>
+            <Button type="submit">{t("create_question")}</Button>
             <Button
               className="w-full sm:w-[120px]"
               onClick={handleCreateQuiz}
               disabled={multipleQuestions.length <= 1}
               type="button"
             >
-              {isPending ? <Spinner /> : t("submit_quiz")}
+              {isPending ? <Spinner /> : t("edit_quiz")}
             </Button>
           </div>
         </form>
       </Form>
-    </main>
+    </section>
   );
 }

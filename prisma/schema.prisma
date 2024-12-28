@@ -65,14 +65,14 @@ model VerificationToken {
 }
 
 model Quiz {
-    id        String     @id @default(cuid())
-    title     String
-    language  String?
-    createdBy String     @map("userId")
-    category  String
-    user      User       @relation(fields: [createdBy], references: [id], onDelete: Cascade)
-    questions Question[]
-    // submissions Submission[]
+    id          String       @id @default(cuid())
+    title       String
+    language    String?
+    createdBy   String       @map("userId")
+    category    String
+    user        User         @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+    questions   Question[]
+    submissions Submission[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -99,7 +99,7 @@ model Submission {
     userId      String
     user        User     @relation(fields: [userId], references: [id])
     quizId      String
-    // quiz        Quiz     @relation(fields: [quizId], references: [id])
+    quiz        Quiz     @relation(fields: [quizId], references: [id])
     score       Int
     submittedAt DateTime @default(now())
 }

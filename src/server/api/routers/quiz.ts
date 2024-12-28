@@ -1,14 +1,30 @@
 import { z } from "zod";
 import { createClient } from "~/lib/supabase/server";
-
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-  supabaseProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, supabaseProcedure } from "~/server/api/trpc";
 
 export const quizRouter = createTRPCRouter({
+  getUserQuizzes: supabaseProcedure.query(async ({ ctx }) => {
+    const quizzes = await ctx.db.quiz.findMany({
+      where: {
+        createdBy: ctx.session.user.id,
+      },
+      select: {
+        id: true,
+        language: true,
+        category: true,
+        title: true,
+        _count: {
+          select: {
+            questions: true,
+          },
+        },
+      },
+    });
+
+    console.log("quizzes", quizzes);
+
+    return quizzes;
+  }),
   createQuiz: supabaseProcedure
     .input(
       z.object({

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+
 import { Badge } from "~/components/ui/badge";
+import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
 
 import {
@@ -52,6 +54,10 @@ const userQuizzes = [
 ];
 
 export function DashboardTable() {
+  const { data: allQuizzes } = api.quiz.getUserQuizzes.useQuery();
+
+  console.log("allQuizzes", allQuizzes);
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -65,16 +71,17 @@ export function DashboardTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {userQuizzes.map((quiz) => (
+          {allQuizzes?.map((quiz) => (
             <TableRow key={quiz.id}>
               <TableCell className="font-medium">{quiz.title}</TableCell>
-              <TableCell>{quiz.questions}</TableCell>
-              <TableCell>{quiz.participants}</TableCell>
+              <TableCell>{quiz._count.questions}</TableCell>
+              <TableCell>{quiz._count.questions}</TableCell>
               <TableCell>
                 <Badge
-                  variant={quiz.status === "active" ? "default" : "secondary"}
+                  // variant={quiz.status === "active" ? "default" : "secondary"}
+                  variant="default"
                 >
-                  {quiz.status}
+                  Active
                 </Badge>
               </TableCell>
               <TableCell>

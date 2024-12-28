@@ -1,4 +1,3 @@
-import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { supabaseAuthRouter } from "./routers/supabase-auth";
 import { quizRouter } from "./routers/quiz";
@@ -9,7 +8,6 @@ import { quizRouter } from "./routers/quiz";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
   spAuth: supabaseAuthRouter,
   quiz: quizRouter,
 });

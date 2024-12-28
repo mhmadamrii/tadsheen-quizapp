@@ -7,6 +7,15 @@ import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
 
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+
+import {
   Table,
   TableBody,
   TableCell,
@@ -14,6 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { MoreHorizontal, MoreVertical } from "lucide-react";
 
 const userQuizzes = [
   {
@@ -55,8 +65,15 @@ const userQuizzes = [
 
 export function DashboardTable() {
   const { data: allQuizzes } = api.quiz.getUserQuizzes.useQuery();
-
   console.log("allQuizzes", allQuizzes);
+
+  if (allQuizzes?.length === 0) {
+    return (
+      <div className="text-center text-xl font-bold text-gray-500">
+        No quizzes found
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-md border">
@@ -85,11 +102,17 @@ export function DashboardTable() {
                 </Badge>
               </TableCell>
               <TableCell>
-                <Link href={`/edit-quiz/${quiz.id}`}>
-                  <Button variant="outline" size="sm">
-                    Edit
-                  </Button>
-                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <MoreVertical />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
             </TableRow>
           ))}

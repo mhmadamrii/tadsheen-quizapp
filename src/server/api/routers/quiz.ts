@@ -1,8 +1,108 @@
 import { z } from "zod";
 import { createClient } from "~/lib/supabase/server";
-import { createTRPCRouter, supabaseProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  supabaseProcedure,
+} from "~/server/api/trpc";
 
 export const quizRouter = createTRPCRouter({
+  submitQuizAndCalculateScore: supabaseProcedure
+    .input(
+      z.object({
+        quizId: z.string(),
+        answers: z.array(
+          z.object({
+            questionId: z.string(),
+            answerId: z.string(),
+          }),
+        ),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { quizId, answers } = input;
+
+      const quiz = await ctx.db.quiz.findUnique({
+        where: { id: quizId },
+        include: {
+          questions: {
+            include: {
+              answers: true,
+            },
+          },
+        },
+      });
+
+      if (!quiz) {
+        throw new Error("Quiz not found");
+      }
+
+      let score = 0;
+      for (const question of quiz.questions) {
+        const submittedAnswer = answers.find(
+          (a) => a.questionId === question.id,
+        );
+        if (submittedAnswer?.answerId === question.correctAnswerId) {
+          score += 1;
+        }
+      }
+
+      const submission = await ctx.db.submission.create({
+        data: {
+          userId: ctx.session.user.id,
+          quizId,
+          score,
+        },
+      });
+
+      return { submission, score };
+    }),
+
+  getQuizById: publicProcedure
+    .input(z.object({ quizId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const quiz = await ctx.db.quiz.findUnique({
+        where: {
+          id: input.quizId,
+        },
+        include: {
+          user: true,
+          questions: {
+            include: {
+              answers: true,
+            },
+          },
+          _count: {
+            select: {
+              questions: true,
+              submissions: true,
+            },
+          },
+        },
+      });
+
+      return quiz;
+    }),
+  getQuizByCategory: publicProcedure
+    .input(z.object({ categoryId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const quizzes = await ctx.db.quiz.findMany({
+        where: {
+          category: input.categoryId,
+        },
+        include: {
+          user: true,
+          _count: {
+            select: {
+              questions: true,
+              submissions: true,
+            },
+          },
+        },
+      });
+
+      return quizzes;
+    }),
   getUserQuizzes: supabaseProcedure.query(async ({ ctx }) => {
     const quizzes = await ctx.db.quiz.findMany({
       where: {
@@ -21,8 +121,6 @@ export const quizRouter = createTRPCRouter({
       },
     });
 
-    console.log("quizzes", quizzes);
-
     return quizzes;
   }),
   createQuiz: supabaseProcedure
@@ -33,6 +131,7 @@ export const quizRouter = createTRPCRouter({
         language: z.string().optional(),
         questions: z.array(
           z.object({
+            correctAnswerId: z.string(),
             question: z.string(),
             answers: z.array(
               z.object({
@@ -44,8 +143,6 @@ export const quizRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const supabase = await createClient();
-      const { data, error } = await supabase.auth.getUser();
       const { title, language, questions, category } = input;
 
       const quiz = await ctx.db.quiz.create({
@@ -53,10 +150,11 @@ export const quizRouter = createTRPCRouter({
           title,
           category,
           language,
-          createdBy: ctx.session.user.id, // Assuming `ctx.session.user.id` is the user creating the quiz
+          createdBy: ctx.session.user.id,
           questions: {
             create: questions.map((q) => ({
               question: q.question,
+              correctAnswerId: q.correctAnswerId,
               answers: {
                 create: q.answers.map((a) => ({
                   value: a.value,

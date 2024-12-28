@@ -52,7 +52,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     Quiz          Quiz[]
-    Submission    Submission[]
+    submissions   Submission[]
     password      String?
 }
 
@@ -79,12 +79,13 @@ model Quiz {
 }
 
 model Question {
-    id         String   @id @default(cuid())
-    quizId     String
-    quiz       Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-    question   String
-    questionId String?
-    answers    Answer[]
+    id              String   @id @default(cuid())
+    quizId          String
+    quiz            Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+    question        String
+    questionId      String?
+    answers         Answer[]
+    correctAnswerId String
 }
 
 model Option {
@@ -97,9 +98,9 @@ model Option {
 model Submission {
     id          String   @id @default(cuid())
     userId      String
-    user        User     @relation(fields: [userId], references: [id])
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     quizId      String
-    quiz        Quiz     @relation(fields: [quizId], references: [id])
+    quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
     score       Int
     submittedAt DateTime @default(now())
 }

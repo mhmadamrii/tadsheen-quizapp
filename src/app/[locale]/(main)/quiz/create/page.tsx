@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { cn } from "~/lib/utils";
@@ -31,7 +33,6 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Spinner } from "~/components/spinner";
 
 type Answer = { id: number; value: string };
 type Question = {
@@ -39,6 +40,7 @@ type Question = {
   question: string;
   answers: Answer[];
   static_answer: string;
+  correctAnswerId: string;
 };
 
 const FormSchema = z.object({
@@ -51,7 +53,9 @@ const FormSchema = z.object({
 export default function CreateQuiz() {
   const t = useTranslations("quiz_form");
   const tq = useTranslations("quiz_categories");
+  const router = useRouter();
 
+  const [correctAnswerId, setCorrectAnswerId] = useState("");
   const [isShowPreviousQ, setIsShowPreviousQ] = useState(false);
   const [isMultipleAnswers, setIsMultipleAnswers] = useState(false);
   const [multipleQuestions, setMultipleQuestions] = useState<Question[]>([
@@ -60,6 +64,7 @@ export default function CreateQuiz() {
       question: "",
       answers: [],
       static_answer: "",
+      correctAnswerId: "",
     },
   ]);
 
@@ -87,6 +92,7 @@ export default function CreateQuiz() {
         question: data.question,
         answers: multipleAnswers,
         static_answer: isMultipleAnswers ? "" : (data.static_answer ?? ""),
+        correctAnswerId,
       },
     ]);
     form.setValue("question", "");
@@ -95,6 +101,7 @@ export default function CreateQuiz() {
   };
 
   const addAnswer = () => {
+    setCorrectAnswerId("");
     setMultipleAnswers((prev) => [...prev, { id: prev.length + 1, value: "" }]);
   };
 
@@ -111,22 +118,13 @@ export default function CreateQuiz() {
   const { mutate, isPending } = api.quiz.createQuiz.useMutation({
     onSuccess: () => {
       toast.success("Successfully created quiz");
-      form.reset();
-      setMultipleQuestions([
-        {
-          id: 1,
-          question: "",
-          answers: [],
-          static_answer: "",
-        },
-      ]);
-      setMultipleAnswers([]);
+      router.push("/dashboard");
     },
   });
 
   const handleCreateQuiz = () => {
-    console.log(form.getValues("category"));
     const transformedQuestions = multipleQuestions.slice(1).map((item) => ({
+      correctAnswerId: item.correctAnswerId,
       question: item.question,
       answers: item.answers.map((answer) => ({
         value: answer.value,
@@ -140,6 +138,8 @@ export default function CreateQuiz() {
       questions: transformedQuestions,
     });
   };
+
+  console.log("correctAnswerId", correctAnswerId);
 
   return (
     <main className="mx-auto flex h-full items-center justify-center">
@@ -236,13 +236,13 @@ export default function CreateQuiz() {
                       </li>
                       {i !== 0 && (
                         <Button
-                          onClick={() =>
+                          onClick={() => {
                             setMultipleQuestions(
                               multipleQuestions.filter(
                                 (q, index) => index !== i,
                               ),
-                            )
-                          }
+                            );
+                          }}
                           type="button"
                           variant="destructive"
                           size="icon"
@@ -300,7 +300,7 @@ export default function CreateQuiz() {
           {isMultipleAnswers ? (
             <div className="space-y-4">
               {multipleAnswers.map((answer, index) => (
-                <div key={answer.id} className="flex items-center space-x-4">
+                <div key={index} className="flex items-center space-x-4">
                   <Input
                     placeholder={`Answer ${index + 1}`}
                     value={answer.value}
@@ -314,6 +314,20 @@ export default function CreateQuiz() {
                   >
                     {t("remove")}
                   </Button>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      id={`correct-answer-${answer.id}`}
+                      name="correct-answer"
+                      value={answer.id}
+                      checked={correctAnswerId === answer.id.toString()}
+                      onChange={() => setCorrectAnswerId(answer.id.toString())}
+                    />
+                    <label htmlFor={`correct-answer-${answer.id}`}>
+                      {/* {t("correct_answer")} */}
+                      Correct Answer
+                    </label>
+                  </div>
                 </div>
               ))}
             </div>
@@ -337,6 +351,7 @@ export default function CreateQuiz() {
           <div className="flex items-center gap-2">
             <Button type="submit">{t("create_question")}</Button>
             <Button
+              className="w-full sm:w-[120px]"
               onClick={handleCreateQuiz}
               disabled={multipleQuestions.length <= 1}
               type="button"

@@ -18,7 +18,6 @@ export default async function DashboardLayout({
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   const user = await api.spAuth.getUser({ email: data?.user?.email ?? "" });
-  console.log("db user", user);
   // console.log(error);
 
   if (!data.user) {

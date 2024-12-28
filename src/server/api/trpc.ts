@@ -138,7 +138,6 @@ export const supabaseProcedure = t.procedure
   .use(async ({ ctx, next }) => {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
-    console.log("data procedure penting", data);
 
     if (!data.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });

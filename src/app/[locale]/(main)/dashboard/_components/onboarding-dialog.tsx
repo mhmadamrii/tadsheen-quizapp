@@ -18,7 +18,6 @@ import {
 } from "~/components/ui/dialog";
 
 export function OnboardingDialog({ user }: { user: any }) {
-  console.log("user", user);
   const [isOpen, setIsOpen] = useState(true);
 
   const { mutate, isPending } = api.spAuth.onboarding.useMutation({

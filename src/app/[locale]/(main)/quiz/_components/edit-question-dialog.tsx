@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pencil } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
@@ -31,6 +31,12 @@ export function EditQuestionDialog({
   );
   const [editedAnswers, setEditedAnswers] = useState(question?.answers || []);
 
+  const updateAnswer = (index: number, value: string) => {
+    setEditedAnswers((prev) =>
+      prev.map((a, i) => (i === index ? { ...a, value } : a)),
+    );
+  };
+
   const handleSaveChanges = () => {
     if (!question) return;
 
@@ -45,14 +51,11 @@ export function EditQuestionDialog({
     toast.success("Successfully edited question");
   };
 
-  const updateAnswer = (index: number, value: string) => {
-    setEditedAnswers((prev) =>
-      prev.map((a, i) => (i === index ? { ...a, value } : a)),
-    );
-  };
-
   return (
-    <Dialog open={isOpenDialogEditQuestion}>
+    <Dialog
+      open={isOpenDialogEditQuestion}
+      onOpenChange={setIsOpenDialogEditQuestion}
+    >
       <DialogTrigger asChild>
         <Button onClick={() => setIsOpenDialogEditQuestion(true)} size="icon">
           <Pencil />

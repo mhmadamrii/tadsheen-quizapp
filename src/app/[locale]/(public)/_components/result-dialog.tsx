@@ -1,6 +1,10 @@
-import { Button } from "~/components/ui/button";
+"use client";
+
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { cn } from "~/lib/utils";
 import { ListChecks } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   AlertDialog,
@@ -22,18 +26,28 @@ export function ResultDialog({
   score: number;
   userStatus: string;
 }) {
+  const pathname = usePathname();
+  const t = useTranslations("dialog_offer");
   const [isOpen, setIsOpen] = useState(true);
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2">
+          <AlertDialogTitle
+            className={cn("flex items-center gap-2", {
+              "flex-row-reverse justify-start": pathname.includes("ar"),
+            })}
+          >
             <ListChecks />
-            Your Result
+            {t("your_result")}
           </AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogDescription
+            className={cn("", {
+              "text-end": pathname.includes("ar"),
+            })}
+          >
             {userStatus === "ANONYMOUS" ? (
-              "You are anonymous, you cannot see your result as the submission required authenticated user"
+              t("you_are_anonymous")
             ) : (
               <span>
                 You got {score} out of {questionCount} questions right!{" "}
@@ -43,7 +57,7 @@ export function ResultDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          <AlertDialogAction>{t("continue")}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

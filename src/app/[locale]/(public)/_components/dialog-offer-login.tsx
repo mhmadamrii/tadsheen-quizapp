@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
+import { usePathname } from "next/navigation";
+import { cn } from "~/lib/utils";
 import { useTranslations } from "next-intl";
 
 import {
@@ -17,6 +21,8 @@ import {
 
 export function DialogOfferLogin({ redirecTo }: { redirecTo: string }) {
   const t = useTranslations("dialog_offer");
+  const pathname = usePathname();
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -24,8 +30,20 @@ export function DialogOfferLogin({ redirecTo }: { redirecTo: string }) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("please_login")}</AlertDialogTitle>
-          <AlertDialogDescription>{t("offer_desc")}</AlertDialogDescription>
+          <AlertDialogTitle
+            className={cn("", {
+              "text-end": pathname.includes("ar"),
+            })}
+          >
+            {t("please_login")}
+          </AlertDialogTitle>
+          <AlertDialogDescription
+            className={cn("", {
+              "text-end": pathname.includes("ar"),
+            })}
+          >
+            {t("offer_desc")}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>

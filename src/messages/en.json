@@ -91,6 +91,9 @@
         "cancel": "Cancel",
         "take_quiz": "Take Quiz",
         "please_login": "Please login to take quiz",
-        "offer_desc": "You are not logged in yet, your progress will not be saved. However you can still continue to take quizzes as anonymous."
+        "offer_desc": "You are not logged in yet, your progress will not be saved. However you can still continue to take quizzes as anonymous.",
+        "your_result": "Your Result",
+        "you_are_anonymous": "You are anonymous, you cannot see your result as the submission required authenticated user",
+        "continue": "Continue"
     }
 }

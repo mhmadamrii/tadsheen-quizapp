@@ -17,6 +17,7 @@ export function LanguageSwitcher({ currentLang }: { currentLang: string }) {
   const changeLang = (lang: string) => {
     const pathWithoutLang = pathname.replace(/^\/(en|ar)/, "");
     const newPath = `/${lang}${pathWithoutLang}`;
+    console.log("new path", newPath);
     router.push(newPath);
     router.refresh();
   };

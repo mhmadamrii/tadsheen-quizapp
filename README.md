@@ -1,85 +1,82 @@
 # TadSheen QuizMaster
 
-A quiz builder built on top Next.js, Prisma, Supabase
+A quiz builder built on top of Next.js, Prisma, and Supabase.
 
 ## Features
 
 - Light/dark mode toggle
 - Live previews
-- Internationalization(i18n) — ar/en
-- Create, read, update, delete quiz
+- Internationalization (i18n) — ar/en
+- Create, read, update, and delete quizzes
 - Quiz submission
 - Answer review
-- Quiz by category
+- Categorized quizzes
 
 ## Demo
 
-https://tadsheen-quizapp.vercel.app/
+[Visit the live demo](https://tadsheen-quizapp.vercel.app/)
 
 ## Before Installation
 
-- you have to make sure you have created project on supabase
-- since we don't need to make email confirmation due we use dummy email e.g: john@gmail, doe@gmail etc **you need to disable email confirmation at supabase**
+1. Ensure you have created a project on Supabase.
+2. Disable email confirmation on Supabase, as the application uses dummy email addresses (e.g., john@gmail.com, doe@gmail.com).
 
-## Installation & run locally
+## Installation & Run Locally
 
-clone project
+1. Clone the repository:
 
-```bash
-  git clone https://github.com/mhmadamrii/tadsheen-quizapp.git
-```
+   ```bash
+   git clone https://github.com/mhmadamrii/tadsheen-quizapp.git
+   ```
 
-navigate to project
+2. Navigate to the project directory:
 
-```bash
-  cd tadsheen-quizapp
-```
+   ```bash
+   cd tadsheen-quizapp
+   ```
 
-install
+3. Install dependencies:
 
-```bash
-  pnpm install
-```
+   ```bash
+   pnpm install
+   ```
 
-database connection
+4. Set up the database:
 
-```bash
-  pnpm db:push
-```
+   ```bash
+   pnpm db:push
+   ```
 
-run locally
+5. Start the development server:
 
-```bash
-  pnpm dev
-```
+   ```bash
+   pnpm dev
+   ```
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+To run this project, add the following environment variables to your `.env` file:
 
-`AUTH_SECRET=`
+```env
+AUTH_SECRET=
+DATABASE_URL=
+DIRECT_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+AUTH_TRUST_HOST=
+```
 
-`DATABASE_URL=`
-
-`DIRECT_URL=`
-
-`NEXT_PUBLIC_SUPABASE_URL=`
-
-`NEXT_PUBLIC_SUPABASE_ANON_KEY=`
-
-`AUTH_TRUST_HOST=`
-
-alternatively you can copy & paste .env.example to your .env
+Alternatively, you can copy the example file and rename it:
 
 ```bash
- cp .env.example .env
+cp .env.example .env
 ```
 
 ## Tech Stack
 
 **Client:** React, Next.js, TailwindCSS
 
-**Server:** tRPC, Next.js API route
+**Server:** tRPC, Next.js API routes
 
 **Authentication:** Supabase Authentication, tRPC procedure
 

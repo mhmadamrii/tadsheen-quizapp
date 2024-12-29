@@ -155,7 +155,11 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
               <FormItem>
                 <FormLabel>{t("title")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Quiz title" {...field} />
+                  <Input
+                    disabled={isPending}
+                    placeholder="Quiz title"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>{t("title_desc")}</FormDescription>
                 <FormMessage />
@@ -203,7 +207,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
           <div className="flex flex-col gap-4">
             <div className="flex justify-between">
               <h1 className="text-xl font-semibold text-gray-500">
-                {t("total_questions")} ({multipleQuestions.length - 1})
+                {t("total_questions")} ({multipleQuestions.length})
               </h1>
 
               <Button
@@ -216,7 +220,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
 
             {isShowPreviousQ && (
               <>
-                {multipleQuestions.length === 1 && (
+                {multipleQuestions.length === 0 && (
                   <h1 className="text-center text-xl font-bold italic text-gray-500">
                     No questions found
                   </h1>
@@ -227,25 +231,21 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
                       key={i}
                       className="flex items-center justify-between p-2"
                     >
-                      <li
-                        className={cn("list-disc text-xl", {
-                          hidden: i == 0,
-                        })}
-                      >
+                      <li className={cn("list-disc text-xl", {})}>
                         {q.question}
                       </li>
                       <div className="flex items-center gap-2">
-                        {i !== 0 && (
+                        {i >= 0 && (
                           <EditQuestionDialog
                             isOpenDialogEditQuestion={isOpenDialogEditQuestion}
                             setIsOpenDialogEditQuestion={
                               setIsOpenDialogEditQuestion
                             }
                             setMultipleQuestions={setMultipleQuestions}
-                            question={multipleQuestions[i]}
+                            question={multipleQuestions[i - 1]}
                           />
                         )}
-                        {i !== 0 && (
+                        {i >= 0 && (
                           <Button
                             onClick={() => {
                               setMultipleQuestions(
@@ -284,7 +284,11 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
               <FormItem>
                 <FormLabel>{t("question")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="What is end of time?" {...field} />
+                  <Input
+                    disabled={isPending}
+                    placeholder="What is end of time?"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>{t("question_desc")}</FormDescription>
                 <FormMessage />
@@ -302,6 +306,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
             {multipleAnswers.map((answer, index) => (
               <div key={index} className="flex items-center space-x-4">
                 <Input
+                  disabled={isPending}
                   placeholder={`Answer ${index + 1}`}
                   value={answer.value}
                   onChange={(e) => updateAnswer(answer.id, e.target.value)}
@@ -316,6 +321,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
                 </Button>
                 <div className="flex items-center space-x-2">
                   <input
+                    disabled={isPending}
                     type="radio"
                     id={`correct-answer-${answer.id}`}
                     name="correct-answer"
@@ -333,7 +339,9 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button type="submit">{t("create_question")}</Button>
+            <Button disabled={correctAnswerId === ""} type="submit">
+              {t("create_question")}
+            </Button>
             <Button
               className="w-full sm:w-[120px]"
               onClick={handleCreateQuiz}

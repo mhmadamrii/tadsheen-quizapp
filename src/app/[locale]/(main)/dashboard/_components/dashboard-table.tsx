@@ -24,6 +24,8 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { useEffect } from "react";
+import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 
 export function DashboardTable() {
   const router = useRouter();
@@ -44,6 +46,11 @@ export function DashboardTable() {
     );
   }
 
+  useEffect(() => {
+    // force refresh
+    router.refresh();
+  }, []);
+
   return (
     <div className="rounded-md border">
       <Table>
@@ -51,8 +58,8 @@ export function DashboardTable() {
           <TableRow>
             <TableHead>Quiz Title</TableHead>
             <TableHead>Questions</TableHead>
-            <TableHead>Participants</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Submissions</TableHead>
+            <TableHead>Category</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -63,12 +70,11 @@ export function DashboardTable() {
               <TableCell>{quiz._count.questions}</TableCell>
               <TableCell>{quiz._count.submissions}</TableCell>
               <TableCell>
-                <Badge
-                  // variant={quiz.status === "active" ? "default" : "secondary"}
-                  variant="default"
-                >
-                  Active
-                </Badge>
+                {
+                  QUIZZEZ_CATEGORY.find(
+                    (q) => q.id.toString() === quiz.category,
+                  )?.title
+                }
               </TableCell>
               <TableCell>
                 <DropdownMenu>

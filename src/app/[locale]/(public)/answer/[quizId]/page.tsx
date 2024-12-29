@@ -4,7 +4,6 @@ import { QuizAnswer } from "../../_components/quiz-answer";
 
 const QuizByIdWithServerData = async ({ quizId }: { quizId: string }) => {
   const quizById = await api.quiz.getQuizById({ quizId });
-  console.log("quizById", quizById);
 
   return <QuizAnswer quiz={quizById} />;
 };

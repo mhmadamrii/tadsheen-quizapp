@@ -22,7 +22,6 @@ export function OnboardingDialog({ user }: { user: any }) {
 
   const { mutate, isPending } = api.spAuth.onboarding.useMutation({
     onSuccess: (data) => {
-      console.log("data", data);
       setIsOpen(false);
       toast.success("Successfully onboarded");
     },

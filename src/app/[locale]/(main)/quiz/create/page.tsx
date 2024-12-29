@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
-import { Plus, Trash } from "lucide-react";
+import { Pencil, Plus, Trash } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -48,6 +48,9 @@ export default function CreateQuiz() {
   const tq = useTranslations("quiz_categories");
   const router = useRouter();
 
+  const [selectedEditableQuestion, setSelectedEditableQuestion] =
+    useState<Question | null>(null);
+  const [selectedEditableIdx, setSelectedEditableIdx] = useState(0);
   const [correctAnswerId, setCorrectAnswerId] = useState("");
   const [isOpenDialogEditQuestion, setIsOpenDialogEditQuestion] = useState(false); // prettier-ignore
   const [isShowPreviousQ, setIsShowPreviousQ] = useState(false);
@@ -154,7 +157,11 @@ export default function CreateQuiz() {
               <FormItem>
                 <FormLabel>{t("title")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Quiz title" {...field} />
+                  <Input
+                    disabled={isPending}
+                    placeholder="Quiz title"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>{t("title_desc")}</FormDescription>
                 <FormMessage />
@@ -235,15 +242,57 @@ export default function CreateQuiz() {
                       </li>
 
                       <div className="flex items-center gap-2">
+                        {/* {i !== 0 && (
+                          <>
+                            <Button
+                              onClick={() => {
+                                setSelectedEditableIdx(i);
+                                setSelectedEditableQuestion(q);
+                                setIsOpenDialogEditQuestion(true);
+                              }}
+                              size="icon"
+                              type="button"
+                            >
+                              <Pencil />
+                            </Button>
+                            <span>index i {i}</span>
+                            <EditQuestionDialog
+                              isOpenDialogEditQuestion={
+                                isOpenDialogEditQuestion &&
+                                i === selectedEditableIdx
+                              }
+                              setIsOpenDialogEditQuestion={
+                                setIsOpenDialogEditQuestion
+                              }
+                              setMultipleQuestions={setMultipleQuestions}
+                              question={selectedEditableQuestion}
+                            />
+                          </>
+                        )} */}
                         {i !== 0 && (
-                          <EditQuestionDialog
-                            isOpenDialogEditQuestion={isOpenDialogEditQuestion}
-                            setIsOpenDialogEditQuestion={
-                              setIsOpenDialogEditQuestion
-                            }
-                            setMultipleQuestions={setMultipleQuestions}
-                            question={multipleQuestions[i]}
-                          />
+                          <>
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                setIsOpenDialogEditQuestion(true);
+                                setSelectedEditableIdx(i);
+                              }}
+                              size="icon"
+                            >
+                              <Pencil />
+                            </Button>
+                            <EditQuestionDialog
+                              isOpenDialogEditQuestion={
+                                isOpenDialogEditQuestion &&
+                                selectedEditableIdx === i
+                              }
+                              setIsOpenDialogEditQuestion={
+                                setIsOpenDialogEditQuestion
+                              }
+                              setMultipleQuestions={setMultipleQuestions}
+                              question={multipleQuestions[i]}
+                            />
+                          </>
                         )}
                         {i !== 0 && (
                           <Button
@@ -284,7 +333,11 @@ export default function CreateQuiz() {
               <FormItem>
                 <FormLabel>{t("question")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="What is end of time?" {...field} />
+                  <Input
+                    disabled={isPending}
+                    placeholder="What is end of time?"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>{t("question_desc")}</FormDescription>
                 <FormMessage />
@@ -302,6 +355,7 @@ export default function CreateQuiz() {
             {multipleAnswers.map((answer, index) => (
               <div key={index} className="flex items-center space-x-4">
                 <Input
+                  disabled={isPending}
                   placeholder={`Answer ${index + 1}`}
                   value={answer.value}
                   onChange={(e) => updateAnswer(answer.id, e.target.value)}
@@ -316,6 +370,7 @@ export default function CreateQuiz() {
                 </Button>
                 <div className="flex items-center space-x-2">
                   <input
+                    disabled={isPending}
                     type="radio"
                     id={`correct-answer-${answer.id}`}
                     name="correct-answer"

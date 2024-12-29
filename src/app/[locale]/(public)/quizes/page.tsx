@@ -1,53 +1,13 @@
 import Link from "next/link";
 
 import { Navbar } from "~/components/navbar";
+import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
 } from "~/components/ui/card";
-
-import {
-  Book,
-  FlaskRoundIcon as Flask,
-  Clock,
-  Radio,
-  Globe,
-} from "lucide-react";
-
-const quizzes = [
-  {
-    id: 1,
-    title: "General Knowledge",
-    description: "Test your general knowledge",
-    icon: Book,
-  },
-  {
-    id: 2,
-    title: "Science Quiz",
-    description: "Explore the wonders of science",
-    icon: Flask,
-  },
-  {
-    id: 3,
-    title: "History Trivia",
-    description: "Journey through historical events",
-    icon: Clock,
-  },
-  {
-    id: 4,
-    title: "Pop Culture",
-    description: "How well do you know pop culture?",
-    icon: Radio,
-  },
-  {
-    id: 5,
-    title: "Geography Challenge",
-    description: "Test your knowledge of world geography",
-    icon: Globe,
-  },
-];
 
 export default async function Quizes({
   params,
@@ -63,7 +23,7 @@ export default async function Quizes({
           Available Quizzes
         </h1>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {quizzes.map((quiz) => (
+          {QUIZZEZ_CATEGORY.map((quiz) => (
             <Link
               href={`/quiz/${quiz.id}`}
               key={quiz.id}

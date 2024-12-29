@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 export function EditQuestionDialog({
   isOpenDialogEditQuestion,
@@ -56,11 +57,6 @@ export function EditQuestionDialog({
       open={isOpenDialogEditQuestion}
       onOpenChange={setIsOpenDialogEditQuestion}
     >
-      <DialogTrigger asChild>
-        <Button onClick={() => setIsOpenDialogEditQuestion(true)} size="icon">
-          <Pencil />
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit Question</DialogTitle>
@@ -90,6 +86,7 @@ export function EditQuestionDialog({
               </div>
             ))}
           </div>
+          <DialogDescription></DialogDescription>
           <DialogFooter>
             <Button type="button" onClick={handleSaveChanges}>
               Save changes

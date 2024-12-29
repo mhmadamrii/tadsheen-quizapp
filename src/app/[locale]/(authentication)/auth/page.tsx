@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { useState } from "react";
+import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Button } from "~/components/ui/button";
@@ -21,8 +22,10 @@ import {
 
 export default function AuthPage() {
   const [activeTab, setActiveTab] = useState("signin");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     event.preventDefault();
     try {
       const formData = new FormData(event.target as HTMLFormElement);
@@ -45,6 +48,8 @@ export default function AuthPage() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +74,7 @@ export default function AuthPage() {
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="signin-email">Email</Label>
                     <Input
+                      disabled={isLoading}
                       id="signin-email"
                       type="email"
                       placeholder="Your email"
@@ -79,6 +85,7 @@ export default function AuthPage() {
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="signin-password">Password</Label>
                     <Input
+                      disabled={isLoading}
                       id="signin-password"
                       type="password"
                       placeholder="Your password"
@@ -88,7 +95,7 @@ export default function AuthPage() {
                   </div>
                 </div>
                 <Button className="mt-4 w-full" type="submit">
-                  Sign In
+                  {isLoading ? <Spinner /> : "Sign In"}
                 </Button>
               </form>
             </TabsContent>
@@ -102,6 +109,7 @@ export default function AuthPage() {
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="signup-email">Email</Label>
                     <Input
+                      disabled={isLoading}
                       name="email"
                       id="signup-email"
                       type="email"
@@ -112,6 +120,7 @@ export default function AuthPage() {
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="signup-password">Password</Label>
                     <Input
+                      disabled={isLoading}
                       name="password"
                       id="signup-password"
                       type="password"
@@ -121,7 +130,7 @@ export default function AuthPage() {
                   </div>
                 </div>
                 <Button className="mt-4 w-full" type="submit">
-                  Sign Up
+                  {isLoading ? <Spinner /> : "Sign Up"}
                 </Button>
               </form>
             </TabsContent>

@@ -1,6 +1,7 @@
 "use client";
 
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { useTranslations } from "next-intl";
 import { useRouter } from "nextjs-toploader/app";
 import { toast } from "sonner";
 import { MoreVertical } from "lucide-react";
@@ -25,7 +26,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { useTranslations } from "next-intl";
 
 export function DashboardTable() {
   const t = useTranslations("dashboard");
@@ -39,6 +39,11 @@ export function DashboardTable() {
     },
   });
 
+  useEffect(() => {
+    // force refresh
+    router.refresh();
+  }, []);
+
   if (allQuizzes?.length === 0) {
     return (
       <div className="text-center text-xl font-bold text-gray-500">
@@ -46,11 +51,6 @@ export function DashboardTable() {
       </div>
     );
   }
-
-  useEffect(() => {
-    // force refresh
-    router.refresh();
-  }, []);
 
   return (
     <div className="rounded-md border">

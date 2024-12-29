@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
 import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 import {
   Card,

@@ -10,6 +10,7 @@ import { Button } from "~/components/ui/button";
 import { login, signup } from "../auth.action";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { useQueryState } from "nuqs";
 
 import {
   Card,
@@ -21,12 +22,14 @@ import {
 } from "~/components/ui/card";
 
 export default function AuthPage() {
+  const [email, setEmail] = useQueryState("email");
+  const [password, setPassword] = useQueryState("password");
   const [activeTab, setActiveTab] = useState("signin");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setIsLoading(true);
     event.preventDefault();
+    setIsLoading(true);
     try {
       const formData = new FormData(event.target as HTMLFormElement);
       if (activeTab === "signin") {
@@ -46,6 +49,7 @@ export default function AuthPage() {
           }
         });
       }
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,6 +84,7 @@ export default function AuthPage() {
                       placeholder="Your email"
                       required
                       name="email"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
@@ -91,6 +96,7 @@ export default function AuthPage() {
                       placeholder="Your password"
                       required
                       name="password"
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                 </div>
@@ -103,10 +109,6 @@ export default function AuthPage() {
               <form onSubmit={handleSubmit}>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="signup-name">Name</Label>
-                    <Input id="signup-name" placeholder="Your name" required />
-                  </div>
-                  <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="signup-email">Email</Label>
                     <Input
                       disabled={isLoading}
@@ -115,6 +117,7 @@ export default function AuthPage() {
                       type="email"
                       placeholder="Your email"
                       required
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
@@ -126,6 +129,7 @@ export default function AuthPage() {
                       type="password"
                       placeholder="Choose a password"
                       required
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                 </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Confetti from "react-confetti";
 
 import { Label } from "~/components/ui/label";
@@ -12,22 +11,31 @@ import { api } from "~/trpc/react";
 import { Spinner } from "~/components/spinner";
 import { cn } from "~/lib/utils";
 import { ResultDialog } from "./result-dialog";
+import { QUIZZEZ_CATEGORY } from "~/lib/constants";
+import { toast } from "sonner";
+import { useQueryState } from "nuqs";
 
 export function QuizAnswer({ quiz }: { quiz: any }) {
-  console.log("quiz", quiz);
+  const [userStatus, setUserStatus] = useQueryState("status");
   const [isExploding, setIsExploding] = useState(false);
   const [userAnswers, setUserAnswers] = useState({});
   const [isShowAnswer, setIsShowAnswer] = useState(false);
   const [userResult, setUserResult] = useState(null);
 
+  console.log("user status", userStatus);
+
   const { mutate, isPending } =
     api.quiz.submitQuizAndCalculateScore.useMutation({
       onSuccess: async (data) => {
+        // @ts-expect-error
         setUserResult(data);
         if (data.score === quiz._count.questions) {
           setIsExploding(true);
         }
         setIsShowAnswer(true);
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     });
 
@@ -43,27 +51,30 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
   };
 
   return (
-    <section className="flex flex-col gap-3">
+    <section className="flex flex-col gap-3 py-5">
       <div>
         <h1 className="text-xl font-bold">Title: {quiz.title}</h1>
-        <h1 className="text-xl font-bold">Category: {quiz.category}</h1>
+        <h1 className="text-xl font-bold">
+          Category: {QUIZZEZ_CATEGORY.find((q) => q.id == quiz.category)?.title}
+        </h1>
         <h1 className="text-xl font-bold">Author: {quiz.user.name}</h1>
-        <Link href="/dashboard">Back to dashboard</Link>
       </div>
       {isShowAnswer && (
         <ResultDialog
           questionCount={quiz._count.questions}
+          // @ts-expect-error
           score={userResult?.score}
+          userStatus={userStatus ?? ""}
         />
       )}
       {isExploding && (
         <Confetti
           recycle={false}
-          numberOfPieces={200}
+          numberOfPieces={500}
           onConfettiComplete={(c) => setIsExploding(false)}
         />
       )}
-      {quiz?.questions?.map((question) => (
+      {quiz?.questions?.map((question: any) => (
         <Card key={question.id} className="mb-4">
           <CardHeader>
             <CardTitle>{question.question}</CardTitle>
@@ -77,7 +88,7 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
                 }))
               }
             >
-              {question.answers?.map((choice, index) => (
+              {question.answers?.map((choice: any, index: number) => (
                 <div
                   key={`${question.id}-${index}`}
                   className="flex items-center space-x-2"
@@ -110,13 +121,26 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
           </CardContent>
         </Card>
       ))}
-      <div>
+      <div className="flex gap-2">
         <Button
-          className="w-full sm:w-[120px]"
+          className={cn("w-full sm:w-[120px]", {
+            hidden: userStatus === "ANONYMOUS",
+          })}
           disabled={isPending || isShowAnswer}
           onClick={() => handleSubmitQuiz()}
         >
           {isPending ? <Spinner /> : "Submit Answer"}
+        </Button>
+
+        <Button
+          className={cn("", {
+            hidden: !userStatus,
+          })}
+          onClick={() => {
+            setIsShowAnswer(true);
+          }}
+        >
+          Submit
         </Button>
       </div>
     </section>

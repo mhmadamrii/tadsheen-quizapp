@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { createClient } from "~/lib/supabase/server";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -49,7 +48,7 @@ export const quizRouter = createTRPCRouter({
 
       const submission = await ctx.db.submission.create({
         data: {
-          userId: ctx.session.user.id,
+          userId: ctx.session.user.id ?? "",
           quizId,
           score,
         },

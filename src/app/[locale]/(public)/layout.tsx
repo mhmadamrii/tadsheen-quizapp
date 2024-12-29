@@ -1,3 +1,4 @@
+import { ForceRefresh } from "~/components/force-refresh";
 import { Navbar } from "~/components/navbar";
 
 export default async function Layout({
@@ -10,6 +11,7 @@ export default async function Layout({
   const currentLang = (await params).locale;
   return (
     <>
+      <ForceRefresh />
       <Navbar currentLang={currentLang} />
       {children}
     </>

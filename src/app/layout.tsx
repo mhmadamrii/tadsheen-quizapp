@@ -4,6 +4,7 @@ import NextTopLoader from "nextjs-toploader";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import { TRPCReactProvider } from "~/trpc/react";
 import { getMessages } from "next-intl/server";
@@ -43,7 +44,7 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              {children}
+              <NuqsAdapter>{children}</NuqsAdapter>
             </ThemeProvider>
           </NextIntlClientProvider>
         </TRPCReactProvider>

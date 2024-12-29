@@ -16,9 +16,11 @@ import {
 export function ResultDialog({
   questionCount,
   score,
+  userStatus,
 }: {
   questionCount: number;
   score: number;
+  userStatus: string;
 }) {
   const [isOpen, setIsOpen] = useState(true);
   return (
@@ -30,8 +32,14 @@ export function ResultDialog({
             Your Result
           </AlertDialogTitle>
           <AlertDialogDescription>
-            You got {score} out of {questionCount} questions right!{" "}
-            {score == 0 ? "🥶" : "🎉"}
+            {userStatus === "ANONYMOUS" ? (
+              "You are anonymous, you cannot see your result as the submission required authenticated user"
+            ) : (
+              <span>
+                You got {score} out of {questionCount} questions right!{" "}
+                {score == 0 ? "🥶" : "🎉"}
+              </span>
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

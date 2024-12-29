@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 
+import { cn } from "~/lib/utils";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -22,6 +25,8 @@ import {
 } from "~/components/ui/card";
 
 export default function AuthPage() {
+  const pathname = usePathname();
+  const t = useTranslations("dialog_auth");
   const [email, setEmail] = useQueryState("email");
   const [password, setPassword] = useQueryState("password");
   const [activeTab, setActiveTab] = useState("signin");
@@ -61,22 +66,39 @@ export default function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-card">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>Welcome to QuizMaster</CardTitle>
-          <CardDescription>
-            Sign in or create an account to start quizzing!
+          <CardTitle
+            className={cn("", {
+              "text-end": pathname.includes("ar"),
+            })}
+          >
+            {t("welcome")}
+          </CardTitle>
+          <CardDescription
+            className={cn("", {
+              "text-end": pathname.includes("ar"),
+            })}
+          >
+            {t("sign_in_or_create_account")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="signin">{t("sign_in")}</TabsTrigger>
+              <TabsTrigger value="signup">{t("sign_up")}</TabsTrigger>
             </TabsList>
             <TabsContent value="signin">
               <form onSubmit={handleSubmit}>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="signin-email">Email</Label>
+                    <Label
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
+                      htmlFor="signin-email"
+                    >
+                      {t("email")}
+                    </Label>
                     <Input
                       disabled={isLoading}
                       id="signin-email"
@@ -85,10 +107,20 @@ export default function AuthPage() {
                       required
                       name="email"
                       onChange={(e) => setEmail(e.target.value)}
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="signin-password">Password</Label>
+                    <Label
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
+                      htmlFor="signin-password"
+                    >
+                      {t("password")}
+                    </Label>
                     <Input
                       disabled={isLoading}
                       id="signin-password"
@@ -97,11 +129,14 @@ export default function AuthPage() {
                       required
                       name="password"
                       onChange={(e) => setPassword(e.target.value)}
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
                     />
                   </div>
                 </div>
                 <Button className="mt-4 w-full" type="submit">
-                  {isLoading ? <Spinner /> : "Sign In"}
+                  {isLoading ? <Spinner /> : t("sign_in")}
                 </Button>
               </form>
             </TabsContent>
@@ -109,7 +144,14 @@ export default function AuthPage() {
               <form onSubmit={handleSubmit}>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="signup-email">Email</Label>
+                    <Label
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
+                      htmlFor="signup-email"
+                    >
+                      {t("email")}
+                    </Label>
                     <Input
                       disabled={isLoading}
                       name="email"
@@ -118,10 +160,20 @@ export default function AuthPage() {
                       placeholder="Your email"
                       required
                       onChange={(e) => setEmail(e.target.value)}
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="signup-password">Password</Label>
+                    <Label
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
+                      htmlFor="signup-password"
+                    >
+                      {t("password")}
+                    </Label>
                     <Input
                       disabled={isLoading}
                       name="password"
@@ -130,11 +182,14 @@ export default function AuthPage() {
                       placeholder="Choose a password"
                       required
                       onChange={(e) => setPassword(e.target.value)}
+                      className={cn("", {
+                        "text-end": pathname.includes("ar"),
+                      })}
                     />
                   </div>
                 </div>
                 <Button className="mt-4 w-full" type="submit">
-                  {isLoading ? <Spinner /> : "Sign Up"}
+                  {isLoading ? <Spinner /> : t("sign_up")}
                 </Button>
               </form>
             </TabsContent>
@@ -142,7 +197,7 @@ export default function AuthPage() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
-            Back to Home
+            {t("back_to_home")}
           </Link>
         </CardFooter>
       </Card>

@@ -24,7 +24,11 @@
         "this_is_your_public_display_name": "This is your public display name.",
         "this_is_your_public_email_address": "This is your public email address.",
         "success": "Successfully registered",
-        "user_already_exist": "User already exist"
+        "user_already_exist": "User already exist",
+        "welcome": "Welcome to QuizMaster",
+        "sign_in_or_create_account": "Please sign in or create an account to start quizzing!",
+        "sign_in": "Sign In",
+        "sign_up": "Sign Up"
     },
     "quiz_form": {
         "title": "Title",

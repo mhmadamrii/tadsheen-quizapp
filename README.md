@@ -1,29 +1,86 @@
-# Create T3 App
+# TadSheen QuizMaster
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A quiz builder built on top Next.js, Prisma, Supabase
 
-## What's next? How do I make an app with this?
+## Features
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- Light/dark mode toggle
+- Live previews
+- Internationalization(i18n) — ar/en
+- Create, read, update, delete quiz
+- Quiz submission
+- Answer review
+- Quiz by category
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Demo
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+https://tadsheen-quizapp.vercel.app/
 
-## Learn More
+## Before Installation
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- you have to make sure you have created project on supabase
+- since we don't need to make email confirmation due we use dummy email e.g: john@gmail, doe@gmail etc **you need to disable email confirmation at supabase**
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Installation & run locally
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+clone project
 
-## How do I deploy this?
+```bash
+  git clone https://github.com/mhmadamrii/tadsheen-quizapp.git
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+navigate to project
+
+```bash
+  cd tadsheen-quizapp
+```
+
+install
+
+```bash
+  pnpm install
+```
+
+database connection
+
+```bash
+  pnpm db:push
+```
+
+run locally
+
+```bash
+  pnpm dev
+```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`AUTH_SECRET=`
+
+`DATABASE_URL=`
+
+`DIRECT_URL=`
+
+`NEXT_PUBLIC_SUPABASE_URL=`
+
+`NEXT_PUBLIC_SUPABASE_ANON_KEY=`
+
+`AUTH_TRUST_HOST=`
+
+alternatively you can copy & paste .env.example to your .env
+
+```bash
+ cp .env.example .env
+```
+
+## Tech Stack
+
+**Client:** React, Next.js, TailwindCSS
+
+**Server:** tRPC, Next.js API route
+
+**Authentication:** Supabase Authentication, tRPC procedure
+
+**ORM:** Prisma

@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 
-import { ArrowRight, Languages } from "lucide-react";
-import { SchoolIcon as MortarBoardIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { LoginButton } from "./login-button";
-import { RegisterButton } from "./register-button";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Navbar } from "~/components/navbar";
@@ -27,7 +24,7 @@ export function LandingPageClient({ currentLang }: { currentLang: string }) {
           <div className="flex flex-col gap-2 rounded-lg bg-gray-100 p-8 shadow-md">
             <div className="flex flex-col gap-4">
               <Button
-                onClick={() => router.push("/quizes")}
+                onClick={() => router.push("/quiz-category")}
                 className="group flex items-center justify-center gap-2 rounded-lg px-4 py-2 transition-all hover:gap-4"
               >
                 <span>{t("getting_started")}</span>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createClient } from "~/lib/supabase/server";
 
 import {
   createTRPCRouter,
@@ -49,6 +50,13 @@ export const supabaseAuthRouter = createTRPCRouter({
 
       return user;
     }),
+
+  getCurrentUser: publicProcedure.query(async ({ ctx }) => {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getUser();
+
+    return data;
+  }),
   signIn: publicProcedure
     .input(z.object({ email: z.string(), password: z.string() }))
     .mutation(async ({ input }) => {

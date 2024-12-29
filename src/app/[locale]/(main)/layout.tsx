@@ -41,7 +41,7 @@ export default async function DashboardLayout({
                   </Link>
                 </li>
                 <li>
-                  <Link href="/quizes">
+                  <Link href="/quiz-category">
                     <Button variant="ghost">Quizzes</Button>
                   </Link>
                 </li>

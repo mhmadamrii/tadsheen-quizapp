@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Switch } from "~/components/ui/switch";
-import { Pencil, Plus, Trash } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, Plus, Trash } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -48,12 +48,10 @@ export default function CreateQuiz() {
   const tq = useTranslations("quiz_categories");
   const router = useRouter();
 
-  const [selectedEditableQuestion, setSelectedEditableQuestion] =
-    useState<Question | null>(null);
   const [selectedEditableIdx, setSelectedEditableIdx] = useState(0);
   const [correctAnswerId, setCorrectAnswerId] = useState("");
   const [isOpenDialogEditQuestion, setIsOpenDialogEditQuestion] = useState(false); // prettier-ignore
-  const [isShowPreviousQ, setIsShowPreviousQ] = useState(false);
+  const [isShowPreviousQ, setIsShowPreviousQ] = useState(true);
   const [isMultipleAnswers, setIsMultipleAnswers] = useState(false);
   const [multipleQuestions, setMultipleQuestions] = useState<Question[]>([
     {
@@ -216,7 +214,7 @@ export default function CreateQuiz() {
                 type="button"
                 onClick={() => setIsShowPreviousQ(!isShowPreviousQ)}
               >
-                {t("show_previous")}
+                {isShowPreviousQ ? <ChevronUp /> : <ChevronDown />}
               </Button>
             </div>
 
@@ -242,33 +240,6 @@ export default function CreateQuiz() {
                       </li>
 
                       <div className="flex items-center gap-2">
-                        {/* {i !== 0 && (
-                          <>
-                            <Button
-                              onClick={() => {
-                                setSelectedEditableIdx(i);
-                                setSelectedEditableQuestion(q);
-                                setIsOpenDialogEditQuestion(true);
-                              }}
-                              size="icon"
-                              type="button"
-                            >
-                              <Pencil />
-                            </Button>
-                            <span>index i {i}</span>
-                            <EditQuestionDialog
-                              isOpenDialogEditQuestion={
-                                isOpenDialogEditQuestion &&
-                                i === selectedEditableIdx
-                              }
-                              setIsOpenDialogEditQuestion={
-                                setIsOpenDialogEditQuestion
-                              }
-                              setMultipleQuestions={setMultipleQuestions}
-                              question={selectedEditableQuestion}
-                            />
-                          </>
-                        )} */}
                         {i !== 0 && (
                           <>
                             <Button

@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { Navbar } from "~/components/navbar";
 import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 import {
   Card,
@@ -14,10 +13,8 @@ export default async function Quizes({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const currentLang = (await params).locale;
   return (
     <main className="mx-auto px-8">
-      <Navbar currentLang={currentLang} />
       <div className="container mx-auto py-8">
         <h1 className="mb-6 text-center text-3xl font-bold">
           Available Quizzes

@@ -118,7 +118,9 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
   });
 
   const handleCreateQuiz = () => {
-    const transformedQuestions = multipleQuestions.slice(1).map((item) => ({
+    console.log(multipleQuestions);
+    const transformedQuestions = multipleQuestions.map((item) => ({
+      id: item.id,
       correctAnswerId: item.correctAnswerId,
       question: item.question,
       answers: item.answers.map((answer) => ({

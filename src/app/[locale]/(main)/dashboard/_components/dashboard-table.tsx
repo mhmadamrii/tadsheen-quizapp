@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { MoreVertical } from "lucide-react";
 import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
+import { useEffect } from "react";
+import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 
 import {
   DropdownMenu,
@@ -24,8 +26,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { useEffect } from "react";
-import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 
 export function DashboardTable() {
   const router = useRouter();

@@ -198,6 +198,7 @@ export const quizRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { title, language, questions, category } = input;
+      console.log("questions", questions);
 
       const quiz = await ctx.db.quiz.update({
         where: {
@@ -209,28 +210,14 @@ export const quizRouter = createTRPCRouter({
           language,
           createdBy: ctx.session.user.id,
           questions: {
-            upsert: questions.map((q) => ({
-              where: {
-                id: q?.id || "", // Use `q.id` if it exists, otherwise set a placeholder
-              },
-              create: {
-                question: q.question,
-                correctAnswerId: q.correctAnswerId,
-                answers: {
-                  create: q.answers.map((a) => ({
-                    value: a.value,
-                  })),
-                },
-              },
-              update: {
-                question: q.question,
-                correctAnswerId: q.correctAnswerId,
-                answers: {
-                  deleteMany: {}, // Clear existing answers (optional, depending on requirements)
-                  create: q.answers.map((a) => ({
-                    value: a.value,
-                  })),
-                },
+            deleteMany: {},
+            create: questions.map((q) => ({
+              question: q.question,
+              correctAnswerId: q.correctAnswerId,
+              answers: {
+                create: q.answers.map((a) => ({
+                  value: a.value,
+                })),
               },
             })),
           },

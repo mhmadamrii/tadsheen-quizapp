@@ -29,11 +29,15 @@ const QuizByCategoryWithServerData = async ({
             <CardTitle>{quiz.title}</CardTitle>
             <CardDescription>by {quiz.user.name}</CardDescription>
           </CardHeader>
-          <CardContent>
-            <h1 className="text-xl">Questions: {quiz._count.questions}</h1>
-            <h1 className="text-xl">Submission: {quiz._count.submissions}</h1>
+          <CardContent className="flex flex-1 flex-col justify-between">
+            <div>
+              <h1 className="text-xl">Questions: {quiz._count.questions}</h1>
+              <h1 className="text-xl">Submission: {quiz._count.submissions}</h1>
+            </div>
+
+            <div></div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="h-full">
             <Button className="w-full" asChild>
               <Link href={`/answer/${quiz.id}`}>Take Quiz</Link>
             </Button>
@@ -47,17 +51,14 @@ const QuizByCategoryWithServerData = async ({
 export default async function QuizByCategoryId({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ categoryId: string }>;
 }) {
-  const id = (await params).id;
+  const categoryId = (await params).categoryId;
 
   return (
-    <main className="mx-auto h-screen border">
-      <Link href="/dashboard" className="text-2xl font-bold">
-        Back
-      </Link>
+    <main className="mx-auto">
       <Suspense fallback={<div>Loading...</div>}>
-        <QuizByCategoryWithServerData categoryId={id} />
+        <QuizByCategoryWithServerData categoryId={categoryId} />
       </Suspense>
     </main>
   );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Question } from "~/lib/types";
 import { EditQuestionDialog } from "../_components/edit-question-dialog";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";

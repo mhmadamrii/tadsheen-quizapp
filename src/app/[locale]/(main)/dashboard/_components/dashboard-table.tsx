@@ -1,11 +1,10 @@
 "use client";
 
-import { Badge } from "~/components/ui/badge";
-import { useRouter } from "next/navigation";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { useRouter } from "nextjs-toploader/app";
 import { toast } from "sonner";
 import { MoreVertical } from "lucide-react";
 import { api } from "~/trpc/react";
-import { Button } from "~/components/ui/button";
 import { useEffect } from "react";
 import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 
@@ -26,8 +25,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { useTranslations } from "next-intl";
 
 export function DashboardTable() {
+  const t = useTranslations("dashboard");
   const router = useRouter();
 
   const { data: allQuizzes, refetch } = api.quiz.getUserQuizzes.useQuery();
@@ -41,7 +42,7 @@ export function DashboardTable() {
   if (allQuizzes?.length === 0) {
     return (
       <div className="text-center text-xl font-bold text-gray-500">
-        No quizzes found
+        {t("no_quizzes_found")}
       </div>
     );
   }
@@ -53,54 +54,56 @@ export function DashboardTable() {
 
   return (
     <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Quiz Title</TableHead>
-            <TableHead>Questions</TableHead>
-            <TableHead>Submissions</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {allQuizzes?.map((quiz) => (
-            <TableRow key={quiz.id}>
-              <TableCell className="font-medium">{quiz.title}</TableCell>
-              <TableCell>{quiz._count.questions}</TableCell>
-              <TableCell>{quiz._count.submissions}</TableCell>
-              <TableCell>
-                {
-                  QUIZZEZ_CATEGORY.find(
-                    (q) => q.id.toString() === quiz.category,
-                  )?.title
-                }
-              </TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <MoreVertical />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Settings</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={() => router.push(`/quiz/edit/${quiz.id}`)}
-                    >
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => mutate({ quizId: quiz.id })}
-                    >
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+      <ScrollArea className="h-[400px] w-full">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>{t("quiz_title")}</TableHead>
+              <TableHead>{t("questions")}</TableHead>
+              <TableHead>{t("submissions")}</TableHead>
+              <TableHead>{t("category")}</TableHead>
+              <TableHead>{t("action")}</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {allQuizzes?.map((quiz) => (
+              <TableRow key={quiz.id}>
+                <TableCell className="font-medium">{quiz.title}</TableCell>
+                <TableCell>{quiz._count.questions}</TableCell>
+                <TableCell>{quiz._count.submissions}</TableCell>
+                <TableCell>
+                  {
+                    QUIZZEZ_CATEGORY.find(
+                      (q) => q.id.toString() === quiz.category,
+                    )?.title
+                  }
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <MoreVertical />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => router.push(`/quiz/edit/${quiz.id}`)}
+                      >
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => mutate({ quizId: quiz.id })}
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </ScrollArea>
     </div>
   );
 }

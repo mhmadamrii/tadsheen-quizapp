@@ -5,7 +5,10 @@
         "welcome": "Welcome to QuizMaster",
         "test_your_knowledge": "Test your knowledge and challenge yourself!",
         "getting_started": "Getting Started",
-        "login": "Login"
+        "login": "Login",
+        "dashboard": "Dashboard",
+        "quizzes": "Quizzes",
+        "logout": "Logout"
     },
     "dialog_auth": {
         "login": "Login",
@@ -41,10 +44,27 @@
         "select_category": "Select a category"
     },
     "quiz_categories": {
+        "available_quizzes": "Available Quizzes",
         "general_knowledge": "General Knowledge",
         "science_quiz": "Science Quiz",
         "history_trivia": "History Trivia",
         "pop_culture": "Pop Culture",
-        "geography_challenge": "Geography Challenge"
+        "geography_challenge": "Geography Challenge",
+        "general_knowledge_desc": "Test your general knowledge and challenge yourself!",
+        "science_quiz_desc": "Explore the wonders of science!",
+        "history_trivia_desc": "Journey through historical events!",
+        "pop_culture_desc": "How well do you know pop culture?",
+        "geography_challenge_desc": "Test your knowledge of world geography!"
+    },
+    "dashboard": {
+        "your_quizzes": "Your Quizzes",
+        "no_quizzes_found": "No quizzes found",
+        "create_new_quiz": "Create New Quiz",
+        "quiz_title": "Quiz Title",
+        "questions": "Questions",
+        "submissions": "Submissions",
+        "category": "Category",
+        "action": "Action",
+        "copyright": "Copyright © 2023 QuizMaster. All rights reserved."
     }
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { EditQuestionDialog } from "./edit-question-dialog";
+import { useRouter } from "nextjs-toploader/app";
 import { Question } from "~/lib/types";
 import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
@@ -34,7 +35,6 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { EditQuestionDialog } from "./edit-question-dialog";
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),

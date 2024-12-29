@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "~/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { Navbar } from "~/components/navbar";
 
 export function LandingPageClient({ currentLang }: { currentLang: string }) {
@@ -19,9 +19,11 @@ export function LandingPageClient({ currentLang }: { currentLang: string }) {
         <div className="w-full max-w-md px-4 py-8">
           <div className="mb-8 text-center">
             <h1 className="mb-2 text-4xl font-bold">{t("welcome")}</h1>
-            <p className="text-xl text-gray-600">{t("test_your_knowledge")}</p>
+            <p className="text-xl text-gray-500 dark:text-gray-400">
+              {t("test_your_knowledge")}
+            </p>
           </div>
-          <div className="flex flex-col gap-2 rounded-lg bg-gray-100 p-8 shadow-md">
+          <div className="flex flex-col gap-2 rounded-lg bg-card p-8 shadow-md">
             <div className="flex flex-col gap-4">
               <Button
                 onClick={() => router.push("/quiz-category")}

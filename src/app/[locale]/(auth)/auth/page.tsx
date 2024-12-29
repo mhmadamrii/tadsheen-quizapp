@@ -54,7 +54,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="flex min-h-screen items-center justify-center bg-card">
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Welcome to QuizMaster</CardTitle>

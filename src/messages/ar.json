@@ -5,7 +5,10 @@
         "welcome": "QuizMaster مرحبا بكم في",
         "test_your_knowledge": "!اختبر معلوماتك وتحدي نفسك",
         "getting_started": "البدء",
-        "login": "تسجيل الدخول"
+        "login": "تسجيل الدخول",
+        "dashboard": "لوحة القياس",
+        "quizzes": "المساعدات",
+        "logout": "تسجيل الخروج"
     },
     "dialog_auth": {
         "login": "تسجيل الدخول",
@@ -41,10 +44,27 @@
         "select_category": "اختر فئة"
     },
     "quiz_categories": {
+        "available_quizzes": "المساعدات المتاحة",
         "general_knowledge": "المعرفة العامة",
         "science_quiz": "المعرفة العامة",
         "history_trivia": "المعرفة العامة",
         "pop_culture": "المعرفة العامة",
-        "geography_challenge": "المعرفة العامة"
+        "geography_challenge": "المعرفة العامة",
+        "general_knowledge_desc": "اختبر معلوماتك العامة وتحدي نفسك",
+        "science_quiz_desc": "اختبر معلوماتك العامة وتحدي نفسك",
+        "history_trivia_desc": "اختبر معلوماتك العامة وتحدي نفسك",
+        "pop_culture_desc": "اختبر معلوماتك العامة وتحدي نفسك",
+        "geography_challenge_desc": "اختبر معلوماتك العامة وتحدي نفسك"
+    },
+    "dashboard": {
+        "your_quizzes": "المساعدات الخاصة بك",
+        "no_quizzes_found": "لم يتم العثور على مساعدات",
+        "create_new_quiz": "إنشاء مساعدة جديدة",
+        "quiz_title": "العنوان المساعدة",
+        "questions": "الأسئلة",
+        "submissions": "التقديمات",
+        "category": "الفئة",
+        "action": "الإجراء",
+        "copyright": "حقوق النشر © 2023 QuizMaster. كل الحقوق محفوظة."
     }
 }

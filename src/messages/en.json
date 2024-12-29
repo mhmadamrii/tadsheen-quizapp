@@ -8,7 +8,10 @@
         "login": "Login",
         "dashboard": "Dashboard",
         "quizzes": "Quizzes",
-        "logout": "Logout"
+        "logout": "Logout",
+        "copyright": "Copyright © 2023 QuizMaster. All rights reserved.",
+        "terms": "Terms of Service",
+        "privacy": "Privacy"
     },
     "dialog_auth": {
         "login": "Login",
@@ -41,7 +44,12 @@
         "total_questions": "Total Questions",
         "show_previous": "Show previous questions",
         "category": "Category",
-        "select_category": "Select a category"
+        "select_category": "Select a category",
+        "create_quiz": "Create Quiz",
+        "correct_answer": "Correct Answer",
+        "quiz_category_desc": "Select a category for the quiz",
+        "no_questions_found": "No questions found",
+        "author": "Author"
     },
     "quiz_categories": {
         "available_quizzes": "Available Quizzes",
@@ -54,7 +62,12 @@
         "science_quiz_desc": "Explore the wonders of science!",
         "history_trivia_desc": "Journey through historical events!",
         "pop_culture_desc": "How well do you know pop culture?",
-        "geography_challenge_desc": "Test your knowledge of world geography!"
+        "geography_challenge_desc": "Test your knowledge of world geography!",
+        "no_quiz_for_this_category": "No quizzes found for this category",
+        "by": "by",
+        "take_quiz": "Take Quiz",
+        "questions": "Questions",
+        "submissions": "Submissions"
     },
     "dashboard": {
         "your_quizzes": "Your Quizzes",
@@ -65,6 +78,15 @@
         "submissions": "Submissions",
         "category": "Category",
         "action": "Action",
-        "copyright": "Copyright © 2023 QuizMaster. All rights reserved."
+        "copyright": "Copyright © 2023 QuizMaster. All rights reserved.",
+        "settings": "Settings",
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "dialog_offer": {
+        "cancel": "Cancel",
+        "take_quiz": "Take Quiz",
+        "please_login": "Please login to take quiz",
+        "offer_desc": "You are not logged in yet, your progress will not be saved. However you can still continue to take quizzes as anonymous."
     }
 }

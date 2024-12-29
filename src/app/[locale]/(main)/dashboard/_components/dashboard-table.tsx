@@ -39,11 +39,6 @@ export function DashboardTable() {
     },
   });
 
-  useEffect(() => {
-    // force refresh
-    router.refresh();
-  }, []);
-
   if (allQuizzes?.length === 0) {
     return (
       <div className="text-center text-xl font-bold text-gray-500">
@@ -84,17 +79,17 @@ export function DashboardTable() {
                       <MoreVertical />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                      <DropdownMenuLabel>{t("settings")}</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={() => router.push(`/quiz/edit/${quiz.id}`)}
                       >
-                        Edit
+                        {t("edit")}
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => mutate({ quizId: quiz.id })}
                       >
-                        Delete
+                        {t("delete")}
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

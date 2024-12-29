@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
+import { useTranslations } from "next-intl";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,24 +16,21 @@ import {
 } from "~/components/ui/alert-dialog";
 
 export function DialogOfferLogin({ redirecTo }: { redirecTo: string }) {
-  console.log("redirect to", redirecTo);
+  const t = useTranslations("dialog_offer");
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="w-full">Take Quiz</Button>
+        <Button className="w-full">{t("take_quiz")}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Please login to continue</AlertDialogTitle>
-          <AlertDialogDescription>
-            You are not logged in yet, your progress will not be saved. However
-            you can still continue to take quizzes as anonymous.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t("please_login")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("offer_desc")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
           <Button className="w-full sm:w-[100px]" asChild>
-            <Link href={`${redirecTo}?status=ANONYMOUS`}>Take Quiz</Link>
+            <Link href={`${redirecTo}?status=ANONYMOUS`}>{t("take_quiz")}</Link>
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

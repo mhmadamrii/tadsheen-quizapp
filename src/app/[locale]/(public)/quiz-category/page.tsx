@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { useTranslations } from "next-intl";
+import { cn } from "~/lib/utils";
 import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 import {
   Card,
@@ -9,13 +10,8 @@ import {
   CardDescription,
 } from "~/components/ui/card";
 
-export default function Quizes({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+const QuizesContent = ({ isRTL }: { isRTL: boolean }) => {
   const t = useTranslations("quiz_categories");
-
   return (
     <main className="mx-auto w-full px-8">
       <div className="container mx-auto py-8">
@@ -30,9 +26,17 @@ export default function Quizes({
               className="transition-transform hover:scale-105"
             >
               <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
+                <CardHeader
+                  className={cn("flex flex-row items-center gap-4", {
+                    "flex-row-reverse": isRTL,
+                  })}
+                >
                   <quiz.icon className="h-8 w-8 text-primary" />
-                  <div>
+                  <div
+                    className={cn("text-start", {
+                      "text-end": isRTL,
+                    })}
+                  >
                     <CardTitle>{t(quiz.t)}</CardTitle>
                     <CardDescription>{t(quiz.t_desc)}</CardDescription>
                   </div>
@@ -44,4 +48,13 @@ export default function Quizes({
       </div>
     </main>
   );
+};
+
+export default async function Quizes({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const locale = (await params).locale;
+  return <QuizesContent isRTL={locale === "ar"} />;
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { EditQuestionDialog } from "./edit-question-dialog";
+import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { Question } from "~/lib/types";
 import { Spinner } from "~/components/spinner";
@@ -47,6 +48,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
   const t = useTranslations("quiz_form");
   const tq = useTranslations("quiz_categories");
   const router = useRouter();
+  const pathname = usePathname();
 
   const [correctAnswerId, setCorrectAnswerId] = useState("");
   const [isOpenDialogEditQuestion, setIsOpenDialogEditQuestion] = useState(false); // prettier-ignore
@@ -140,11 +142,14 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
   useEffect(() => {
     form.setValue("title", quizById.title);
     setMultipleQuestions(quizById.questions);
+    form.setValue("category", "1");
   }, [quizById]);
+
+  console.log("quizById", form.getValues("category"));
 
   return (
     <section className="mx-auto flex h-full w-full max-w-4xl flex-col items-center justify-center gap-3 py-5">
-      <h1 className="text-3xl font-bold">Edit Quiz</h1>
+      <h1 className="text-3xl font-bold">{t("edit_quiz")}</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -154,10 +159,17 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem>
+              <FormItem
+                className={cn("flex flex-col", {
+                  "items-end": pathname.includes("ar"),
+                })}
+              >
                 <FormLabel>{t("title")}</FormLabel>
                 <FormControl>
                   <Input
+                    className={cn("", {
+                      "text-end": pathname.includes("ar"),
+                    })}
                     disabled={isPending}
                     placeholder="Quiz title"
                     {...field}
@@ -179,10 +191,15 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("select_category")} />
+                        <SelectValue
+                          placeholder={
+                            field.value ? field.value : t("select_category")
+                          }
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -197,7 +214,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>Select your quiz category</FormDescription>
+                  <FormDescription>{t("quiz_category_desc")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -224,7 +241,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
               <>
                 {multipleQuestions.length === 0 && (
                   <h1 className="text-center text-xl font-bold italic text-gray-500">
-                    No questions found
+                    {t("no_questions_found")}
                   </h1>
                 )}
                 <ul>
@@ -283,10 +300,17 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
             control={form.control}
             name="question"
             render={({ field }) => (
-              <FormItem>
+              <FormItem
+                className={cn("flex flex-col", {
+                  "items-end": pathname.includes("ar"),
+                })}
+              >
                 <FormLabel>{t("question")}</FormLabel>
                 <FormControl>
                   <Input
+                    className={cn("", {
+                      "text-end": pathname.includes("ar"),
+                    })}
                     disabled={isPending}
                     placeholder="What is end of time?"
                     {...field}
@@ -308,6 +332,9 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
             {multipleAnswers.map((answer, index) => (
               <div key={index} className="flex items-center space-x-4">
                 <Input
+                  className={cn("", {
+                    "text-end": pathname.includes("ar"),
+                  })}
                   disabled={isPending}
                   placeholder={`Answer ${index + 1}`}
                   value={answer.value}
@@ -332,8 +359,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
                     onChange={() => setCorrectAnswerId(answer.id.toString())}
                   />
                   <label htmlFor={`correct-answer-${answer.id}`}>
-                    {/* {t("correct_answer")} */}
-                    Correct Answer
+                    {t("correct_answer")}
                   </label>
                 </div>
               </div>
@@ -347,7 +373,7 @@ export function EditQuizForm({ quizById }: { quizById: any }) {
             <Button
               className="w-full sm:w-[120px]"
               onClick={handleCreateQuiz}
-              disabled={multipleQuestions.length <= 1}
+              disabled={multipleQuestions.length <= 0}
               type="button"
             >
               {isPending ? <Spinner /> : t("edit_quiz")}

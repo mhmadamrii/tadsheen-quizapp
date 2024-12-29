@@ -8,7 +8,7 @@ import { ModeToggle } from "~/components/theme-toggle";
 export function MainNavbar({ currentLang }: { currentLang: string }) {
   const t = useTranslations("HomePage");
   return (
-    <div className="flex items-center gap-7">
+    <div className="hidden items-center gap-7 sm:flex">
       <div className="flex items-center gap-2">
         <nav>
           <ul className="flex space-x-4">

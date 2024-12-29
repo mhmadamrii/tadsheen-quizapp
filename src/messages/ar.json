@@ -8,7 +8,10 @@
         "login": "تسجيل الدخول",
         "dashboard": "لوحة القياس",
         "quizzes": "المساعدات",
-        "logout": "تسجيل الخروج"
+        "logout": "تسجيل الخروج",
+        "copyright": "حقوق النشر © 2023 QuizMaster. كل الحقوق محفوظة.",
+        "terms": "الشروط والأحكام",
+        "privacy": "الخصوصية"
     },
     "dialog_auth": {
         "login": "تسجيل الدخول",
@@ -41,7 +44,12 @@
         "total_questions": "إجمالي الأسئلة",
         "show_previous": "إظهار السؤالات السابقة",
         "category": "الفئة",
-        "select_category": "اختر فئة"
+        "select_category": "اختر فئة",
+        "create_quiz": "إنشاء مساعدة",
+        "correct_answer": "الجواب المتصل",
+        "quiz_category_desc": "اختر فئة للمساعدة",
+        "no_questions_found": "لم يتم العثور على أسئلة",
+        "author": "المؤلف"
     },
     "quiz_categories": {
         "available_quizzes": "المساعدات المتاحة",
@@ -54,7 +62,12 @@
         "science_quiz_desc": "اختبر معلوماتك العامة وتحدي نفسك",
         "history_trivia_desc": "اختبر معلوماتك العامة وتحدي نفسك",
         "pop_culture_desc": "اختبر معلوماتك العامة وتحدي نفسك",
-        "geography_challenge_desc": "اختبر معلوماتك العامة وتحدي نفسك"
+        "geography_challenge_desc": "اختبر معلوماتك العامة وتحدي نفسك",
+        "no_quiz_for_this_category": "لم يتم العثور على مساعدات لهذه الفئة",
+        "by": "بواسطة",
+        "take_quiz": "المساعدة",
+        "questions": "الأسئلة",
+        "submissions": "التقديمات"
     },
     "dashboard": {
         "your_quizzes": "المساعدات الخاصة بك",
@@ -65,6 +78,15 @@
         "submissions": "التقديمات",
         "category": "الفئة",
         "action": "الإجراء",
-        "copyright": "حقوق النشر © 2023 QuizMaster. كل الحقوق محفوظة."
+        "copyright": "حقوق النشر © 2023 QuizMaster. كل الحقوق محفوظة.",
+        "settings": "الإعدادات",
+        "edit": "تعديل",
+        "delete": "حذف"
+    },
+    "dialog_offer": {
+        "cancel": "إلغاء",
+        "take_quiz": "المساعدة",
+        "please_login": "الرجاء تسجيل الدخول للمساعدة",
+        "offer_desc": "لم تقم بتسجيل الدخول بعد، ولن يتم حفظ تقدمك. لكن لا يزال بإمكانك الاستمرار في إجراء الاختبارات كمجهول."
     }
 }

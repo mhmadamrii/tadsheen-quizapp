@@ -7,6 +7,7 @@ import { api } from "~/trpc/server";
 import { SchoolIcon as MortarBoardIcon } from "lucide-react";
 import { MainNavbar } from "../_components/main-navbar";
 import { MainFooter } from "../_components/main-footer";
+import { MobileNav } from "~/components/mobile-nav";
 
 export default async function DashboardLayout({
   children,
@@ -36,6 +37,7 @@ export default async function DashboardLayout({
             QuizMaster
           </Link>
           <MainNavbar currentLang={currentLang} />
+          <MobileNav currentLang={currentLang} user={user} />
         </div>
       </header>
       <main className="flex-grow px-5">{children}</main>

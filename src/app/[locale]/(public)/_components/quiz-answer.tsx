@@ -14,15 +14,18 @@ import { ResultDialog } from "./result-dialog";
 import { QUIZZEZ_CATEGORY } from "~/lib/constants";
 import { toast } from "sonner";
 import { useQueryState } from "nuqs";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 
 export function QuizAnswer({ quiz }: { quiz: any }) {
+  const t = useTranslations("quiz_form");
+  const pathname = usePathname();
+
   const [userStatus, setUserStatus] = useQueryState("status");
   const [isExploding, setIsExploding] = useState(false);
   const [userAnswers, setUserAnswers] = useState({});
   const [isShowAnswer, setIsShowAnswer] = useState(false);
   const [userResult, setUserResult] = useState(null);
-
-  console.log("user status", userStatus);
 
   const { mutate, isPending } =
     api.quiz.submitQuizAndCalculateScore.useMutation({
@@ -50,15 +53,32 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
     });
   };
 
+  console.log("pathname", pathname.includes("ar"));
+
   return (
     <section className="flex flex-col gap-3 py-5">
-      <div>
-        <h1 className="text-xl font-bold">Title: {quiz.title}</h1>
+      <div
+        className={cn("flex flex-col", {
+          "items-end justify-end": pathname.includes("ar"),
+        })}
+      >
         <h1 className="text-xl font-bold">
-          Category: {QUIZZEZ_CATEGORY.find((q) => q.id == quiz.category)?.title}
+          {pathname.includes("ar")
+            ? `${quiz.title} :${t("title")}`
+            : `${t("title")}: ${quiz.title}`}
         </h1>
-        <h1 className="text-xl font-bold">Author: {quiz.user.name}</h1>
+        <h1 className="text-xl font-bold">
+          {pathname.includes("ar")
+            ? `${QUIZZEZ_CATEGORY.find((q) => q.id == quiz.category)?.title || ""} :${t("category")}`
+            : `${t("category")}: ${QUIZZEZ_CATEGORY.find((q) => q.id == quiz.category)?.title}`}
+        </h1>
+        <h1 className="text-xl font-bold">
+          {pathname.includes("ar")
+            ? `${quiz.user.name} :${t("author")}`
+            : `${t("author")}: ${quiz.user.name}`}
+        </h1>
       </div>
+
       {isShowAnswer && (
         <ResultDialog
           questionCount={quiz._count.questions}
@@ -121,7 +141,11 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
           </CardContent>
         </Card>
       ))}
-      <div className="flex gap-2">
+      <div
+        className={cn("flex gap-2", {
+          "flex-row-reverse": pathname.includes("ar"),
+        })}
+      >
         <Button
           className={cn("w-full sm:w-[120px]", {
             hidden: userStatus === "ANONYMOUS",
@@ -129,7 +153,7 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
           disabled={isPending || isShowAnswer}
           onClick={() => handleSubmitQuiz()}
         >
-          {isPending ? <Spinner /> : "Submit Answer"}
+          {isPending ? <Spinner /> : `${t("submit")}`}
         </Button>
 
         <Button
@@ -140,7 +164,7 @@ export function QuizAnswer({ quiz }: { quiz: any }) {
             setIsShowAnswer(true);
           }}
         >
-          Submit
+          {t("submit")}
         </Button>
       </div>
     </section>

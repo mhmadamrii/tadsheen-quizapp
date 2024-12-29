@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Question } from "~/lib/types";
 import { EditQuestionDialog } from "../_components/edit-question-dialog";
 import { useRouter } from "nextjs-toploader/app";
@@ -47,6 +48,7 @@ export default function CreateQuiz() {
   const t = useTranslations("quiz_form");
   const tq = useTranslations("quiz_categories");
   const router = useRouter();
+  const pathname = usePathname();
 
   const [selectedEditableIdx, setSelectedEditableIdx] = useState(0);
   const [correctAnswerId, setCorrectAnswerId] = useState("");
@@ -142,7 +144,7 @@ export default function CreateQuiz() {
 
   return (
     <main className="mx-auto flex h-full max-w-4xl flex-col items-center justify-center gap-3 py-5">
-      <h1 className="text-3xl font-bold">Create Quiz</h1>
+      <h1 className="text-3xl font-bold">{t("create_quiz")}</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -152,10 +154,17 @@ export default function CreateQuiz() {
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem>
+              <FormItem
+                className={cn("flex flex-col", {
+                  "items-end": pathname.includes("ar"),
+                })}
+              >
                 <FormLabel>{t("title")}</FormLabel>
                 <FormControl>
                   <Input
+                    className={cn("", {
+                      "text-end": pathname.includes("ar"),
+                    })}
                     disabled={isPending}
                     placeholder="Quiz title"
                     {...field}
@@ -172,7 +181,7 @@ export default function CreateQuiz() {
               control={form.control}
               name="category"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full sm:w-1/2">
                   <FormLabel>{t("category")}</FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -195,7 +204,7 @@ export default function CreateQuiz() {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription>Select your quiz category</FormDescription>
+                  <FormDescription>{t("quiz_category_desc")}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -222,7 +231,7 @@ export default function CreateQuiz() {
               <>
                 {multipleQuestions.length === 1 && (
                   <h1 className="text-center text-xl font-bold italic text-gray-500">
-                    No questions found
+                    {t("no_questions_found")}
                   </h1>
                 )}
                 <ul>
@@ -301,10 +310,17 @@ export default function CreateQuiz() {
             control={form.control}
             name="question"
             render={({ field }) => (
-              <FormItem>
+              <FormItem
+                className={cn("flex flex-col", {
+                  "items-end": pathname.includes("ar"),
+                })}
+              >
                 <FormLabel>{t("question")}</FormLabel>
                 <FormControl>
                   <Input
+                    className={cn("", {
+                      "text-end": pathname.includes("ar"),
+                    })}
                     disabled={isPending}
                     placeholder="What is end of time?"
                     {...field}
@@ -326,6 +342,9 @@ export default function CreateQuiz() {
             {multipleAnswers.map((answer, index) => (
               <div key={index} className="flex items-center space-x-4">
                 <Input
+                  className={cn("", {
+                    "text-end": pathname.includes("ar"),
+                  })}
                   disabled={isPending}
                   placeholder={`Answer ${index + 1}`}
                   value={answer.value}
@@ -350,8 +369,7 @@ export default function CreateQuiz() {
                     onChange={() => setCorrectAnswerId(answer.id.toString())}
                   />
                   <label htmlFor={`correct-answer-${answer.id}`}>
-                    {/* {t("correct_answer")} */}
-                    Correct Answer
+                    {t("correct_answer")}
                   </label>
                 </div>
               </div>
@@ -366,7 +384,7 @@ export default function CreateQuiz() {
               className="w-full sm:w-[120px]"
               onClick={handleCreateQuiz}
               disabled={multipleQuestions.length <= 1}
-              type="button"
+              type="submit"
             >
               {isPending ? <Spinner /> : t("submit_quiz")}
             </Button>

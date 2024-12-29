@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { cn } from "~/lib/utils";
 import { ModeToggle } from "./theme-toggle";
 import { useTranslations } from "next-intl";
+import { MobileNav } from "./mobile-nav";
 
 export function Navbar({ currentLang }: { currentLang: string }) {
   const t = useTranslations("HomePage");
@@ -26,18 +27,30 @@ export function Navbar({ currentLang }: { currentLang: string }) {
         <span className="text-2xl font-bold">QuizMaster</span>
       </Link>
 
-      <div className={cn("flex items-center gap-7")}>
+      <div className={cn("hidden items-center gap-7 sm:flex")}>
         <div className="flex items-center gap-2">
           {!user?.user && (
-            <Button
-              className={cn("", {
-                hidden: pathname === "/en" || pathname === "/ar",
-              })}
-              variant="ghost"
-              asChild
-            >
-              <Link href="/auth">Login</Link>
-            </Button>
+            <>
+              <Button
+                className={cn("", {
+                  hidden: pathname === "/en" || pathname === "/ar",
+                })}
+                variant="ghost"
+                asChild
+              >
+                <Link href="/auth">{t("login")}</Link>
+              </Button>
+
+              <Button
+                className={cn("", {
+                  hidden: pathname === "/en" || pathname === "/ar",
+                })}
+                variant="ghost"
+                asChild
+              >
+                <Link href="/quiz-category">{t("quizzes")}</Link>
+              </Button>
+            </>
           )}
           {user?.user && (
             <nav>
@@ -64,6 +77,7 @@ export function Navbar({ currentLang }: { currentLang: string }) {
         </div>
         <LanguageSwitcher currentLang={currentLang} />
       </div>
+      <MobileNav currentLang={currentLang} user={user} />
     </header>
   );
 }

@@ -2,13 +2,17 @@
 
 import { Languages } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
-import { Switch } from "./ui/switch";
-import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 export function LanguageSwitcher({ currentLang }: { currentLang: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isChecked, setChecked] = useState(currentLang === "ar");
 
   const changeLang = (lang: string) => {
     const pathWithoutLang = pathname.replace(/^\/(en|ar)/, "");
@@ -18,15 +22,22 @@ export function LanguageSwitcher({ currentLang }: { currentLang: string }) {
   };
 
   return (
-    <div className="ml-auto flex items-center gap-4">
+    <div className="ml-0 flex items-center gap-4 sm:ml-auto">
       <Languages className="h-6 w-6" />
-      <div>
-        <Switch
-          onClick={() => changeLang(currentLang === "en" ? "ar" : "en")}
-          checked={isChecked}
-          onCheckedChange={setChecked}
-        />
-      </div>
+      <Select
+        onValueChange={(value) => {
+          changeLang(value);
+        }}
+        defaultValue={currentLang}
+      >
+        <SelectTrigger className="w-32">
+          <SelectValue placeholder="Select Language" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="en">English</SelectItem>
+          <SelectItem value="ar">العربية</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 }

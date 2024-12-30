@@ -384,7 +384,7 @@ export default function CreateQuiz() {
               className="w-full sm:w-[120px]"
               onClick={handleCreateQuiz}
               disabled={multipleQuestions.length <= 1}
-              type="submit"
+              type="button"
             >
               {isPending ? <Spinner /> : t("submit_quiz")}
             </Button>

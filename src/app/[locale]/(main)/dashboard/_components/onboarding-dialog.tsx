@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { api } from "~/trpc/react";
 import { Input } from "~/components/ui/input";
 import { Spinner } from "~/components/spinner";
@@ -18,6 +20,8 @@ import {
 } from "~/components/ui/dialog";
 
 export function OnboardingDialog({ user }: { user: any }) {
+  const t = useTranslations("onboarding");
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
 
   const { mutate, isPending } = api.spAuth.onboarding.useMutation({
@@ -35,15 +39,13 @@ export function OnboardingDialog({ user }: { user: any }) {
     <Dialog open={isOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Onboarding</DialogTitle>
-          <DialogDescription>
-            Please finish the onboarding process to get started.
-          </DialogDescription>
+          <DialogTitle>{t("onboarding")}</DialogTitle>
+          <DialogDescription>{t("please_finish")}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Fullname
+              {t("fullname")}
             </Label>
             <Input
               id="name"
@@ -66,7 +68,7 @@ export function OnboardingDialog({ user }: { user: any }) {
             }
             type="button"
           >
-            {isPending ? <Spinner /> : "Finish Setup"}
+            {isPending ? <Spinner /> : t("finish_setup")}
           </Button>
         </DialogFooter>
       </DialogContent>

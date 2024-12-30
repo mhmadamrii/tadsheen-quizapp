@@ -95,5 +95,11 @@
         "your_result": "Your Result",
         "you_are_anonymous": "You are anonymous, you cannot see your result as the submission required authenticated user",
         "continue": "Continue"
+    },
+    "onboarding": {
+        "onboarding": "Onboarding",
+        "please_finish": "Please finish the onboarding process to get started.",
+        "fullname": "Fullname",
+        "finish_setup": "Finish Setup"
     }
 }

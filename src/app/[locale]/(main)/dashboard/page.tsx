@@ -17,7 +17,7 @@ const DashboardContent = ({ isRTL }: { isRTL: boolean }) => {
           "flex-row-reverse": isRTL,
         })}
       >
-        <h1 className="text-3xl font-bold">{t("your_quizzes")}</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">{t("your_quizzes")}</h1>
         <Link href="/quiz/create">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" /> {t("create_new_quiz")}

@@ -88,7 +88,8 @@
         "copyright": "Copyright © 2023 QuizMaster. All rights reserved.",
         "settings": "Settings",
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "success_delete_quiz": "Successfully deleted quiz"
     },
     "dialog_offer": {
         "cancel": "Cancel",

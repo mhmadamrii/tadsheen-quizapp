@@ -34,7 +34,7 @@ export function DashboardTable() {
   const { data: allQuizzes, refetch } = api.quiz.getUserQuizzes.useQuery();
   const { mutate } = api.quiz.deleteQuiz.useMutation({
     onSuccess: () => {
-      toast.success("Successfully deleted quiz");
+      toast.success(t("success_delete_quiz"));
       refetch();
     },
   });

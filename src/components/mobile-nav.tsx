@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { ModeToggle } from "./theme-toggle";
 import { AlignJustify } from "lucide-react";
 import { useTranslations } from "next-intl";

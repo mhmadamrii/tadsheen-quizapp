@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { api } from "~/trpc/server";
 import { useTranslations } from "next-intl";
 import { QuizCardSkeleton } from "../../_components/quiz-card-skeleton";

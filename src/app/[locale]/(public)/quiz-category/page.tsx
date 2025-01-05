@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { useTranslations } from "next-intl";
 import { cn } from "~/lib/utils";
 import { QUIZZEZ_CATEGORY } from "~/lib/constants";

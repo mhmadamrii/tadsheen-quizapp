@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "nextjs-toploader/app";
 import { Navbar } from "~/components/navbar";
+import { cn } from "~/lib/utils";
 
 export function LandingPageClient({ currentLang }: { currentLang: string }) {
   const t = useTranslations("HomePage");
@@ -27,10 +27,23 @@ export function LandingPageClient({ currentLang }: { currentLang: string }) {
             <div className="flex flex-col gap-4">
               <Button
                 onClick={() => router.push("/quiz-category")}
-                className="group flex items-center justify-center gap-2 rounded-lg px-4 py-2 transition-all hover:gap-4"
+                className={cn(
+                  "group flex items-center justify-center gap-2 rounded-lg px-4 py-2 transition-all hover:gap-4",
+                  {
+                    "flex-row-reverse": currentLang === "ar",
+                  },
+                )}
               >
                 <span>{t("getting_started")}</span>
-                <span className="transform transition-transform duration-300 group-hover:translate-x-2">
+                <span
+                  className={cn(
+                    "transform transition-transform duration-300 group-hover:translate-x-2",
+                    {
+                      "rotate-180 group-hover:-translate-x-2":
+                        currentLang === "ar",
+                    },
+                  )}
+                >
                   <ArrowRight />
                 </span>
               </Button>

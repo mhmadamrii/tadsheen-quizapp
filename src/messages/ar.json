@@ -54,7 +54,9 @@
         "correct_answer": "الجواب المتصل",
         "quiz_category_desc": "اختر فئة للمساعدة",
         "no_questions_found": "لم يتم العثور على أسئلة",
-        "author": "المؤلف"
+        "author": "المؤلف",
+        "success_add_question": "تم إضافة السؤال بنجاح",
+        "success_create_quiz": "تم إنشاء المساعدة بنجاح"
     },
     "quiz_categories": {
         "available_quizzes": "المساعدات المتاحة",

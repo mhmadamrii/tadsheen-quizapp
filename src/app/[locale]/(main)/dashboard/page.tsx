@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { PlusCircle } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { DashboardTable } from "./_components/dashboard-table";

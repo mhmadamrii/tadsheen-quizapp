@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { SchoolIcon as MortarBoardIcon } from "lucide-react";
 import { LanguageSwitcher } from "./language-switcher";
 import { api } from "~/trpc/react";

@@ -28,7 +28,8 @@
         "welcome": "Welcome to QuizMaster",
         "sign_in_or_create_account": "Please sign in or create an account to start quizzing!",
         "sign_in": "Sign In",
-        "sign_up": "Sign Up"
+        "sign_up": "Sign Up",
+        "back_to_home": "Back to Home"
     },
     "quiz_form": {
         "title": "Title",
@@ -53,7 +54,9 @@
         "correct_answer": "Correct Answer",
         "quiz_category_desc": "Select a category for the quiz",
         "no_questions_found": "No questions found",
-        "author": "Author"
+        "author": "Author",
+        "success_add_question": "Successfully added question",
+        "success_create_quiz": "Successfully created quiz"
     },
     "quiz_categories": {
         "available_quizzes": "Available Quizzes",

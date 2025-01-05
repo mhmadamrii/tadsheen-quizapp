@@ -4,7 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Question } from "~/lib/types";
 import { EditQuestionDialog } from "../_components/edit-question-dialog";
-import { useRouter } from "nextjs-toploader/app";
+import { useRouter } from "~/i18n/routing";
 import { Spinner } from "~/components/spinner";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
@@ -82,7 +82,7 @@ export default function CreateQuiz() {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    toast.success("Successfully added question");
+    toast.success(t("success_add_question"));
     setMultipleQuestions((prev) => [
       ...prev,
       {
@@ -120,7 +120,7 @@ export default function CreateQuiz() {
 
   const { mutate, isPending } = api.quiz.createQuiz.useMutation({
     onSuccess: () => {
-      toast.success("Successfully created quiz");
+      toast.success(t("success_create_quiz"));
       router.push("/dashboard");
     },
   });

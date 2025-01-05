@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { Link } from "~/i18n/routing";
 import { redirect } from "next/navigation";
 import { createClient } from "~/lib/supabase/server";
 import { OnboardingDialog } from "./dashboard/_components/onboarding-dialog";
